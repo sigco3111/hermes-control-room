@@ -1,0 +1,30 @@
+{
+  "name": "hermes-control-room",
+  "version": "1.0.0",
+  "description": "헤르메스 자동화 시스템을 3D isometric office로 시각화 (W17ant/Claude-Office fork)",
+  "author": "sigco3111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sigco3111/hermes-control-room.git"
+  },
+  "homepage": "https://sigco3111.github.io/hermes-control-room/",
+  "bugs": "https://github.com/sigco3111/hermes-control-room/issues",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0"
+  }
+}
