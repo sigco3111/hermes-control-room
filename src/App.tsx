@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react'
 import './styles/office.css'
 import './styles/rooms.css'
+import { LabHeader, HermesMetrics } from './components/LabHeader'
+import { LabSidePanel } from './components/LabSidePanel'
+import { LabTicker } from './components/LabTicker'
 import SlackChat, { ChatMessage } from './components/SlackChat'
 import Character from './components/Character'
 import FurnitureRenderer from './components/FurnitureRenderer'
@@ -315,6 +318,14 @@ const App: React.FC = () => {
 
   // Boss interaction effect (shown above boss character)
   const [bossEffect, setBossEffect] = useState<string | null>(null)
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null)
+  const [metrics] = useState<HermesMetrics>({
+    activeCrons: 19,
+    memoryUsed: 2189,
+    memoryCap: 2200,
+    tistoryToday: 0,
+    sessionCount: 1,
+  })
 
   const handleFurnitureClick = useCallback((itemId: string) => {
     const interaction = getInteraction(itemId)
@@ -1768,22 +1779,11 @@ const App: React.FC = () => {
 
   return (
     <div className="app-wrapper">
-      <div className="title-bar">
-        <div className="title-bar-dot" style={{ background: '#ff5f57' }} />
-        <div className="title-bar-dot" style={{ background: '#febc2e' }} />
-        <div className="title-bar-dot" style={{ background: '#28c840' }} />
-        <span className="title-bar-text">CLAUDE CODE — AGENT OFFICE</span>
-        <button
-          className="title-bar-daynight"
-          onClick={() => setDayNightMode(prev =>
-            prev === 'auto' ? 'day' : prev === 'day' ? 'night' : 'auto'
-          )}
-          title={`Mode: ${dayNightMode}`}
-        >
-          {dayNightMode === 'auto' ? 'AUTO' : dayNightMode === 'day' ? 'DAY' : 'NIGHT'}
-        </button>
-        <span className="title-bar-phase">{getPhaseLabel(effectivePhase)}</span>
-      </div>
+      <LabHeader
+        metrics={metrics}
+        selectedRoomId={selectedRoomId}
+        onSelectRoom={(id) => setSelectedRoomId(id === selectedRoomId ? null : id)}
+      />
 
       <div className="app-body">
       <div className="office-view">
@@ -1910,6 +1910,13 @@ const App: React.FC = () => {
           <div className={`day-overlay ${effectivePhase}`} />
         </div>
       </div>
+
+      <LabTicker />
+
+      <LabSidePanel
+        selectedRoomId={selectedRoomId as any}
+        onClose={() => setSelectedRoomId(null)}
+      />
 
       <SlackChat
         messages={messages}
