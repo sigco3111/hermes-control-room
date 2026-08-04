@@ -1,0 +1,94 @@
+{
+  "timestamp": "2026-08-04T00:48:16.083Z",
+  "activeCrons": 19,
+  "memoryUsed": 2189,
+  "memoryCap": 2200,
+  "tistoryToday": 0,
+  "sessionCount": 1,
+  "rooms": {
+    "tistory": {
+      "status": "active",
+      "lastRun": "2026-08-04T06:11",
+      "nextRun": "2026-08-04T06:16",
+      "lastStatus": "success",
+      "scripts": [
+        "b1bca63a117a",
+        "0b0e9f44e10a",
+        "b21d94a14860"
+      ]
+    },
+    "errors": {
+      "status": "active",
+      "lastRun": "2026-08-04T06:10",
+      "nextRun": "2026-08-04T06:15",
+      "lastStatus": "success",
+      "scripts": [
+        "e0ba30d8a122",
+        "81f1c81f8664"
+      ]
+    },
+    "graph": {
+      "status": "active",
+      "lastRun": "2026-08-04T06:08",
+      "nextRun": "2026-08-04T06:18",
+      "lastStatus": "success",
+      "scripts": [
+        "d7bd4309bbf0",
+        "388898171a79",
+        "e330c7de50d1"
+      ]
+    },
+    "improve": {
+      "status": "active",
+      "lastRun": "2026-08-04T06:04",
+      "nextRun": "2026-08-04T06:34",
+      "lastStatus": "success",
+      "scripts": [
+        "5d0f14aef84c",
+        "ed5f37705e68"
+      ]
+    },
+    "trend": {
+      "status": "active",
+      "lastRun": "2026-08-04T06:00",
+      "nextRun": "2026-08-04T07:00",
+      "lastStatus": "success",
+      "scripts": [
+        "b26b0579a45f",
+        "e330c7de50d1",
+        "075bec58df7b"
+      ]
+    },
+    "notebook": {
+      "status": "waiting",
+      "lastRun": "2026-08-04T05:55",
+      "nextRun": "2026-08-04T07:55",
+      "lastStatus": "success",
+      "scripts": [
+        "dc9a2e6aaaaa"
+      ]
+    },
+    "blog": {
+      "status": "active",
+      "lastRun": "2026-08-04T05:51",
+      "nextRun": "2026-08-04T06:51",
+      "lastStatus": "success",
+      "scripts": [
+        "b02a45f4d14e",
+        "0f893ba14797",
+        "582ecc59aaee"
+      ]
+    },
+    "infra": {
+      "status": "active",
+      "lastRun": "2026-08-04T05:50",
+      "nextRun": "2026-08-04T06:20",
+      "lastStatus": "success",
+      "scripts": [
+        "5a376ec002c3",
+        "7c2b9a9be162",
+        "memory-error-tracker"
+      ]
+    }
+  }
+}
