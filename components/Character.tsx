@@ -1,3 +1,4 @@
+import { BASE_URL } from '../baseUrl'
 import React, { useRef, useState, useEffect } from 'react'
 import { Agent, AgentState } from '../types'
 import SpeechBubble from './SpeechBubble'

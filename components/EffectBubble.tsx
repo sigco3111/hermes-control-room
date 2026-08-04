@@ -1,3 +1,4 @@
+import { BASE_URL } from '../baseUrl'
 /**
  * EffectBubble — a small floating sprite that appears above a character.
  *
@@ -8,7 +9,7 @@
 import React from 'react'
 
 interface EffectBubbleProps {
-  /** Full path to the sprite, e.g. '/sprites/effects/typing.png' */
+  /** Full path to the sprite, e.g. `\${BASE_URL}sprites/effects/typing.png` */
   src: string
   /** Accessible label */
   alt?: string

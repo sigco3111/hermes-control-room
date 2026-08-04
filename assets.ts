@@ -1,3 +1,4 @@
+import { BASE_URL } from './baseUrl'
 // ===== ASSET MANIFEST =====
 // Maps logical asset names to actual file paths
 // Sizes are display sizes (px) at 800x600 room resolution
@@ -62,8 +63,8 @@ export const ASSETS: Record<string, SpriteAsset> = {
   'fx-typing':         { path: '/hermes-control-room/sprites/effects/typing.png', width: 24, height: 24, category: 'effect' },
 
   // === ROOMS ===
-  'room-office-day':   { path: '/hermes-control-room/rooms/office-day-dm.png', width: 800, height: 600, category: 'room' },
-  'room-office-night': { path: '/hermes-control-room/rooms/office-night-dm.png', width: 800, height: 600, category: 'room' },
+  'room-office-day':   { path: `${BASE_URL}rooms/office-day-dm.png`, width: 800, height: 600, category: 'room' },
+  'room-office-night': { path: `${BASE_URL}rooms/office-night-dm.png`, width: 800, height: 600, category: 'room' },
 }
 
 // Helper: get asset by key, returns path or fallback

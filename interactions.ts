@@ -1,3 +1,4 @@
+import { BASE_URL } from './baseUrl'
 /**
  * interactions.ts — Boss interaction definitions for clickable furniture
  *

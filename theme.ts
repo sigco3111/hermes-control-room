@@ -130,7 +130,7 @@ export function getCharacterBaseForRole(role: string, defaultBase: string): stri
 }
 
 export function getSpriteDir(): string {
-  return state.name === 'office' ? '/hermes-control-room/hermes-control-room/sprites/office/characters' : '/hermes-control-room/hermes-control-room/sprites/characters'
+  return state.name === 'office' ? `${BASE_URL}sprites/office/characters` : `${BASE_URL}sprites/characters`
 }
 
 /** Kept signature-compatible for existing callers — agentId ignored; role is the key. */
@@ -141,15 +141,15 @@ export function getSpritePath(_agentId: string, role: string, defaultBase: strin
 
 export function getRoomImage(phase: 'day' | 'night'): string {
   if (state.name === 'office') {
-    return phase === 'night' ? '/rooms/office-night-dm.png' : '/rooms/office-day-dm.png'
+    return phase === 'night' ? `${BASE_URL}rooms/office-night-dm.png` : `${BASE_URL}rooms/office-day-dm.png`
   }
-  return phase === 'night' ? '/rooms/office-night.png' : '/rooms/office-day.png'
+  return phase === 'night' ? `${BASE_URL}rooms/office-night.png` : `${BASE_URL}rooms/office-day.png`
 }
 
 /** Returns the ROLE currently cast as Angela (if any), plus cat sprite path. */
 export function getAngelaCat(): { role: string; catSprite: string } | null {
   if (state.name !== 'office' || !state.angelaRole || !state.angelaCat) return null
-  return { role: state.angelaRole, catSprite: `/hermes-control-room/sprites/office/cats/${state.angelaCat}.png` }
+  return { role: state.angelaRole, catSprite: `${BASE_URL}sprites/office/cats/${state.angelaCat}.png` }
 }
 
 /** Human-readable display name for a slug (e.g. "michael-scott" → "Michael Scott") */
@@ -346,35 +346,35 @@ export function displayNameFromSlug(slug: string): string {
 // per-role so the same agent keeps the same prop within a session.
 const OFFICE_PROPS_BY_SLUG: Record<string, string[]> = {
   'michael-scott':   [
-    '/hermes-control-room/sprites/office/props/worlds-best-boss-mug.png',
-    '/hermes-control-room/sprites/office/props/dundie-award.png',
-    '/hermes-control-room/sprites/office/props/golden-ticket-box.png',
-    '/hermes-control-room/sprites/office/props/prison-mike.png',
-    '/hermes-control-room/sprites/office/props/no-god-please-no.png',
+    `${BASE_URL}sprites/office/props/worlds-best-boss-mug.png`,
+    `${BASE_URL}sprites/office/props/dundie-award.png`,
+    `${BASE_URL}sprites/office/props/golden-ticket-box.png`,
+    `${BASE_URL}sprites/office/props/prison-mike.png`,
+    `${BASE_URL}sprites/office/props/no-god-please-no.png`,
   ],
   'dwight-schrute':  [
-    '/hermes-control-room/sprites/office/props/cpr-dummy-mask.png',
-    '/hermes-control-room/sprites/office/props/schrute-buck.png',
+    `${BASE_URL}sprites/office/props/cpr-dummy-mask.png`,
+    `${BASE_URL}sprites/office/props/schrute-buck.png`,
   ],
-  'jim-halpert':     ['/hermes-control-room/sprites/office/props/jello-stapler.png'],
-  'stanley-hudson':  ['/hermes-control-room/sprites/office/props/pretzel-day.png'],
-  'jan-levinson':    ['/hermes-control-room/sprites/office/props/serenity-by-jan-candle.png'],
+  'jim-halpert':     [`${BASE_URL}sprites/office/props/jello-stapler.png`'],
+  'stanley-hudson':  [`${BASE_URL}sprites/office/props/pretzel-day.png`'],
+  'jan-levinson':    [`${BASE_URL}sprites/office/props/serenity-by-jan-candle.png`'],
   // Why: Finer Things Club members share the prop — Oscar, Pam, and Toby.
-  'oscar-martinez':  ['/hermes-control-room/sprites/office/props/finer-things-club.png'],
-  'pam-beesly':      ['/hermes-control-room/sprites/office/props/finer-things-club.png'],
-  'toby-flenderson': ['/hermes-control-room/sprites/office/props/finer-things-club.png'],
+  'oscar-martinez':  [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
+  'pam-beesly':      [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
+  'toby-flenderson': [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
   // Angela: randomized second cat assigned per-role below — not a prop file.
 }
 
 // Why: generic fallback for remaining cast so every Office character has a prop.
 const OFFICE_GENERIC_PROPS = [
-  '/hermes-control-room/sprites/office/props/dunder-mifflin-logo.png',
-  '/hermes-control-room/sprites/office/props/dunder-mifflin-paper-box.png',
-  '/hermes-control-room/sprites/office/props/schrute-buck.png',
-  '/hermes-control-room/sprites/office/props/golden-ticket-box.png',
+  `${BASE_URL}sprites/office/props/dunder-mifflin-logo.png`,
+  `${BASE_URL}sprites/office/props/dunder-mifflin-paper-box.png`,
+  `${BASE_URL}sprites/office/props/schrute-buck.png`,
+  `${BASE_URL}sprites/office/props/golden-ticket-box.png`,
 ]
 
-const OFFICE_CATS_PATHS = OFFICE_CATS.map(c => `/hermes-control-room/sprites/office/cats/${c}.png`)
+const OFFICE_CATS_PATHS = OFFICE_CATS.map(c => `${BASE_URL}sprites/office/cats/${c}.png`)
 
 // Stable per-role generic prop / head-cat assignment — deterministic hash so it doesn't flicker.
 function hashString(s: string): number {
