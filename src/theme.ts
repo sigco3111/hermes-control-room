@@ -1,6 +1,7 @@
 /** theme.ts — Office TV theme pack (characters, rooms, chatter, names, events) */
 
 import { useSyncExternalStore } from 'react'
+import { BASE_URL } from './baseUrl'
 
 export type ThemeName = 'default' | 'office'
 
@@ -148,7 +149,7 @@ export function getRoomImage(phase: 'day' | 'night'): string {
 /** Returns the ROLE currently cast as Angela (if any), plus cat sprite path. */
 export function getAngelaCat(): { role: string; catSprite: string } | null {
   if (state.name !== 'office' || !state.angelaRole || !state.angelaCat) return null
-  return { role: state.angelaRole, catSprite: `/sprites/office/cats/${state.angelaCat}.png` }
+  return { role: state.angelaRole, catSprite: `${BASE_URL}sprites/office/cats/${state.angelaCat}.png` }
 }
 
 /** Human-readable display name for a slug (e.g. "michael-scott" → "Michael Scott") */
@@ -373,7 +374,7 @@ const OFFICE_GENERIC_PROPS = [
   '/sprites/office/props/golden-ticket-box.png',
 ]
 
-const OFFICE_CATS_PATHS = OFFICE_CATS.map(c => `/sprites/office/cats/${c}.png`)
+const OFFICE_CATS_PATHS = OFFICE_CATS.map(c => `${BASE_URL}sprites/office/cats/${c}.png`)
 
 // Stable per-role generic prop / head-cat assignment — deterministic hash so it doesn't flicker.
 function hashString(s: string): number {
