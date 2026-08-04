@@ -1,3 +1,4 @@
+import { BASE_URL } from './baseUrl'
 // ===== ROOM DEFINITIONS =====
 // Each room is an empty shell with positions for furniture placement
 // Furniture items are placed on a grid within each room
@@ -81,8 +82,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Main Office',
     description: 'Open plan workspace where agents code, debug, and ship',
     background: {
-      day: '/rooms/office-day.png',
-      night: '/rooms/office-night.png',
+      day: `\${BASE_URL}rooms/office-day.png`,
+      night: `\${BASE_URL}rooms/office-night.png`,
     },
     width: 800,
     height: 600,
@@ -244,8 +245,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: "Manager's Office",
     description: 'Where the manager briefs agents and reviews work. Connected to main Claude terminal.',
     background: {
-      day: '/rooms/ceo-office.png',
-      night: '/rooms/ceo-office.png',
+      day: `\${BASE_URL}rooms/ceo-office.png`,
+      night: `\${BASE_URL}rooms/ceo-office.png`,
     },
     width: 600,
     height: 450,
@@ -266,8 +267,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'CEO Office',
     description: 'Corner office with city views. Bloomberg terminal and whiskey shelf.',
     background: {
-      day: '/rooms/ceo-office.png',
-      night: '/rooms/ceo-office.png',
+      day: `\${BASE_URL}rooms/ceo-office.png`,
+      night: `\${BASE_URL}rooms/ceo-office.png`,
     },
     width: 600,
     height: 450,
@@ -287,8 +288,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Meeting Room',
     description: 'Glass-walled room for standups, planning, and heated architecture debates.',
     background: {
-      day: '/rooms/meeting-room.png',
-      night: '/rooms/meeting-room.png',
+      day: `\${BASE_URL}rooms/meeting-room.png`,
+      night: `\${BASE_URL}rooms/meeting-room.png`,
     },
     width: 600,
     height: 450,
@@ -312,8 +313,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Kitchen',
     description: 'Espresso machine, kombucha on tap, and a fridge full of La Croix.',
     background: {
-      day: '/rooms/kitchen-cafeteria.png',
-      night: '/rooms/kitchen-cafeteria.png',
+      day: `\${BASE_URL}rooms/kitchen-cafeteria.png`,
+      night: `\${BASE_URL}rooms/kitchen-cafeteria.png`,
     },
     width: 600,
     height: 450,
@@ -337,8 +338,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Server Room',
     description: 'Cold. Loud. Blinking lights. Where deployments happen.',
     background: {
-      day: '/rooms/server-room.png',
-      night: '/rooms/server-room.png',
+      day: `\${BASE_URL}rooms/server-room.png`,
+      night: `\${BASE_URL}rooms/server-room.png`,
     },
     width: 500,
     height: 400,
@@ -360,8 +361,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Lobby',
     description: 'Where new hires arrive. Swag wall. Pile of Amazon packages.',
     background: {
-      day: '/rooms/lobby-reception.png',
-      night: '/rooms/lobby-reception.png',
+      day: `\${BASE_URL}rooms/lobby-reception.png`,
+      night: `\${BASE_URL}rooms/lobby-reception.png`,
     },
     width: 600,
     height: 450,
@@ -384,8 +385,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Wellness Room',
     description: 'Sleep pods, meditation cushions, and a Himalayan salt lamp.',
     background: {
-      day: '/rooms/nap-wellness-room.png',
-      night: '/rooms/nap-wellness-room.png',
+      day: `\${BASE_URL}rooms/nap-wellness-room.png`,
+      night: `\${BASE_URL}rooms/nap-wellness-room.png`,
     },
     width: 500,
     height: 400,
@@ -407,8 +408,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Rooftop Terrace',
     description: 'Friday drinks, BBQ, and pretending to have work-life balance.',
     background: {
-      day: '/rooms/rooftop-terrace.png',
-      night: '/rooms/rooftop-terrace.png',
+      day: `\${BASE_URL}rooms/rooftop-terrace.png`,
+      night: `\${BASE_URL}rooms/rooftop-terrace.png`,
     },
     width: 700,
     height: 500,
@@ -430,8 +431,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Gym',
     description: 'A Peloton, some dumbbells, and a mirror for flexing your PRs.',
     background: {
-      day: '/rooms/gym-fitness-room.png',
-      night: '/rooms/gym-fitness-room.png',
+      day: `\${BASE_URL}rooms/gym-fitness-room.png`,
+      night: `\${BASE_URL}rooms/gym-fitness-room.png`,
     },
     width: 500,
     height: 400,
@@ -452,8 +453,8 @@ export const ROOMS: Record<RoomId, Room> = {
     name: 'Parking Garage',
     description: 'Teslas, e-scooters, and reserved spots nobody respects.',
     background: {
-      day: '/rooms/parking-garage.png',
-      night: '/rooms/parking-garage.png',
+      day: `\${BASE_URL}rooms/parking-garage.png`,
+      night: `\${BASE_URL}rooms/parking-garage.png`,
     },
     width: 700,
     height: 500,

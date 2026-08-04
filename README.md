@@ -1,6 +1,14 @@
-# Claude Office
+# Hermes Control Room
 
-A pixel art virtual office that visualizes your AI agents working in real-time. Watch Claude Code agents spawn, sit at desks, take coffee breaks, and chat in a Slack-inspired office chat panel — all rendered in an isometric pixel art office.
+> W17ant/Claude-Office 포크 · 헤르메스 자동화 시스템 시각화 (Dunder Mifflin 모드)
+
+A pixel art virtual office that visualizes your AI agents working in real-time. Watch Claude Code agents spawn, sit at desks, take coffee breaks, and chat in a Slack-inspired office chat panel — all rendered in an isometric pixel art office. Forked to **Hermes Control Room** so the office reflects 8 active automation departments (Tistory, briefing, automation, research, Notion, trading, media, DevOps) and their live cron status.
+
+## 라이브 데모
+
+- 🟢 https://sigco3111.github.io/hermes-control-room/
+- source: `a08abdd` (Claude-Office 원본, Twin Lab 톤 미적용, 영문 디자인)
+- 1개 룸 (Dunder Mifflin 사무실) + 27 cast members
 
 ## Update — Dunder Mifflin mode
 
@@ -48,249 +56,58 @@ Each cast member gets a signature prop floating above their desk in place of the
   &nbsp;&nbsp;
   <img src="docs/images/prop-golden-ticket.png" alt="Golden Ticket (Michael)" height="70">
   &nbsp;&nbsp;
-  <img src="docs/images/prop-prison-mike.png" alt="Prison Mike bandana (Michael)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-no-god.png" alt="NO GOD PLEASE NO (Michael)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-cpr-mask.png" alt="CPR Dummy Mask (Dwight)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-schrute-buck.png" alt="Schrute Buck (Dwight)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-jello-stapler.png" alt="Jello Stapler (Jim)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-pretzel.png" alt="Pretzel Day (Stanley)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-serenity-candle.png" alt="Serenity by Jan (Jan)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-finer-things.png" alt="Finer Things Club (Oscar / Pam / Toby)" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-paper-box.png" alt="Dunder Mifflin Paper Box" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-dunder-logo.png" alt="Dunder Mifflin Logo" height="70">
-  &nbsp;&nbsp;
-  <img src="docs/images/prop-angela-cat.png" alt="Angela's cat" height="70">
 </p>
 
-Toggle it off any time with `/the-office` again — state persists in `localStorage`.
+## Hermes Control Room — 8개 부서 (다음 작업)
 
----
+본 포크는 헤르메스 자동화 시스템의 8개 부서를 시각화하는 방향으로 확장 예정:
 
-### Full office — agents working, chatting, and taking coffee breaks
-![Day Mode](docs/images/Day-Mode.png)
+| 부서 | emoji | 설명 | status 표시 |
+|------|-------|------|-------------|
+| Tistory 발행 | 📝 | 자동 발행 파이프라인 | active / idle / error |
+| 모닝 브리핑 | 🌅 | 매일 아침 통합 인사이트 | active / idle |
+| 자동화 정비 | ⚙️ | nightly maintenance | active / idle |
+| 리서치/트렌드 | 🔍 | 기술 트렌드 수집 | active / idle |
+| Notion 동기화 | 📓 | Notion DB 자동 sync | active / waiting |
+| 투자/트레이딩 | 📈 | Yahoo Finance 추적 | active / inactive |
+| 미디어/영상 | 🎬 | Manim/뮤직비디오 | active / idle |
+| DevOps | 🔧 | cron 헬스체크 | active / error |
 
-## Features
+자세한 작업 지시사항은 [`HANDOFF.md`](./HANDOFF.md) 참조.
 
-**Live Agent Visualization**
-- Agents appear as pixel art characters that walk into the office through the door
-- Each agent type gets a unique character sprite and desk assignment
-- Agents show typing bubbles, take coffee/water breaks, and leave when done
-- Boss character (you) with Red Bull, Claude with coffee
-- Random office events: pizza deliveries, fire drills, power flickers, printer jams
-- Day/night cycle with smooth transitions
+## 트러블슈팅 / 함정
 
-**AI-Powered Office Chat**
-- Back-and-forth conversation with Claude through the office chat panel
-- Claude has a witty office manager personality with running jokes
-- Multi-agent routing — mention a bug and the Debugger responds, ask about UI and Frontend answers
-- Typing indicators, emoji reactions, read receipts
-- Slash commands: `/status`, `/agents`, `/help`
-- Chat history persists across restarts (SQLite)
-- Proactive messages — agents announce when they start and finish work
-- Smart macOS notifications for important events
+본 프로젝트는 gh-pages 서브경로(`/hermes-control-room/`)에 호스팅됩니다. 다음 함정 회피:
 
-**Context-Aware AI**
-- Claude knows your current git branch and active agents
-- Conversation memory — remembers the last 10 messages
-- AI On/Off toggle to control token usage
+- **vite base prefix 누락**: `vite.config.ts`의 `base: '/hermes-control-room/'`가 빌드 시 JS 내부 절대경로에 자동 적용되지 않음 → `post-build.sh`로 sed 강제 박기
+- **theme.ts BASE_URL 미정의**: `getAngelaCat` 등 일부 함수가 `BASE_URL` 식별자 사용 — `theme.ts`에 `import { BASE_URL } from './baseUrl'` 필수
+- **getRoomImage prefix 누락**: `theme.ts:142-146`의 `getRoomImage`가 `/rooms/...` 반환 — `\`${BASE_URL}rooms/...\`` 로 변경
+- **office.css .app-body 중복 정의**: cascade 순서로 옛 정의가 이길 수 있음 — 1번만 정의
+- **main.tsx 누락**: dd5e521 이전 커밋엔 `src/main.tsx` 없음 — React 18 + `createRoot` + `<App />` 필요
+- **@vitejs/plugin-react import**: vite.config.ts에 `import react from '@vitejs/plugin-react'` 정상이어야 함
 
-### Night mode — the office after dark, agents still grinding
-![Night Mode](docs/images/night-mode.png)
-
-### Waiting for tokens... the office keeps itself entertained
-![Waiting for tokens](docs/images/entertainment-waiting-tokenreset.png)
-
-## How It Works
-
-Claude Code hooks capture agent spawns, tool calls, and completions via `PreToolUse` and `PostToolUse` hooks. Events are sent to a local Express + WebSocket server, which broadcasts them to the React frontend.
-
-```
-Claude Code ──hook──> Express Server ──WebSocket──> React Frontend
-                           │
-                     SQLite (chat)
-                           │
-                   Chat AI Watcher ──claude -p──> Reply
-```
-
-## Quick Start
+## 빌드 / 배포
 
 ```bash
-# Clone
-git clone https://github.com/W17ant/Claude-Office.git
-cd Claude-Office
-
-# Install
 npm install
-
-# Start everything (server + frontend + chat watcher)
-bash scripts/start-office.sh
-
-# Stop everything
-bash scripts/stop-office.sh
+npm run build
+bash post-build.sh              # sprite/room path prefix 박기
 ```
 
-Open `http://localhost:3333` — the office is ready.
-
-### Auto-Permissions
-
-The repo includes `.claude/settings.json` which auto-allows curl commands to the local office server (`127.0.0.1:3334`) and the start/stop scripts. This means the chat monitor cron and office commands run without permission prompts.
-
-### Connect Claude Code
-
-Add the hook to `~/.claude/settings.json`:
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "hooks": [{ "type": "command", "command": "bash /path/to/Claude-Office/hooks/agent-tracker.sh" }]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [{ "type": "command", "command": "bash /path/to/Claude-Office/hooks/agent-tracker.sh" }]
-      }
-    ]
-  }
-}
-```
-
-Now spawn agents in Claude Code and watch them appear in the office.
-
-## Customise Your Character
-
-The boss character (you) is configurable via `office.config.json`:
-
-```json
-{
-  "boss": {
-    "name": "YourName",
-    "sprite": "MyChar-1",
-    "color": "#ff4444",
-    "emoji": "crown"
-  }
-}
-```
-
-### Creating a custom sprite
-
-Use the Helper sprite sheet as a reference for the 4-direction layout — here's an example of mine next to it:
-
-<p>
-  <img src="docs/images/Helper.png" alt="Helper Sprite Template" height="250">
-  <img src="docs/images/Me-1-front-right.png" alt="Custom Boss — Front Right" height="250">
-  <img src="docs/images/Me-1-rear-left.png" alt="Custom Boss — Rear Left" height="250">
-</p>
-
-Here's Mini Claude — I asked Claude to describe itself after showing it the office with my avatar, then used the prompt to generate the sprite:
-
-<img src="docs/images/mini-claude.png" alt="Mini Claude" height="500">
-
-1. Open ChatGPT (with DALL-E image generation)
-2. Upload `public/sprites/characters/Helper.png` as a reference
-3. Ask it to generate a pixel art character in the same style and layout (4 directions: front-left, rear-right, front-right, rear-left)
-4. Save the output and extract the sprites:
+`dist/`를 `gh-pages` 브랜치에 푸시:
 
 ```bash
-python3 scripts/extract-boss-sprite.py your-character.png MyChar-1
+git clone https://github.com/sigco3111/hermes-control-room.git /tmp/fresh-clone
+cd /tmp/fresh-clone
+git checkout --orphan gh-pages
+git rm -rf .
+cp -r <project>/dist/. .
+touch .nojekyll
+git add -A
+git commit -m "deploy: ..."
+git push -u origin gh-pages --force
 ```
 
-## Chat
+## 라이선스
 
-| Command | Description |
-|---------|-------------|
-| `/status` | Office stats — agents, clients |
-| `/agents` | List active agents |
-| `/help` | Show available commands |
-
-### Agent Routing
-
-The chat AI routes your messages to specialist agents based on keywords:
-
-| Topic | Agent |
-|-------|-------|
-| bugs, errors, crashes | Debugger |
-| PRs, code review, git | Reviewer |
-| UI, CSS, design | Frontend |
-| tests, coverage, e2e | Tester |
-| auth, security, tokens | Security |
-| deploys, Docker, CI | DevOps |
-| performance, caching | PerfEng |
-| databases, SQL | DBA |
-| TypeScript, types | TS Pro |
-| AI, LLMs, prompts | AI Eng |
-| APIs, REST, webhooks | Fullstack |
-| architecture, patterns | Architect |
-
-### Just me and Claude — chatting in the office
-![Me & Claude](docs/images/Me%20&%20Claude.png)
-
-## Modes
-
-| URL | Mode |
-|-----|------|
-| `localhost:3333` | Live — connected to Claude Code via WebSocket |
-| `localhost:3333?sim` | Simulation — scripted demo with fake agents |
-| `localhost:3333?video` | Video — scripted recording mode |
-| `localhost:3333?helper` | Placement helper — dev tool for positioning furniture |
-
-## Tech Stack
-
-- **Frontend**: React + TypeScript + Vite
-- **Server**: Express + WebSocket (ws)
-- **Storage**: SQLite (better-sqlite3)
-- **Chat AI**: Claude CLI (`claude -p`)
-- **Sprites**: Custom pixel art (isometric)
-- **Desktop**: Electron (optional)
-
-## Project Structure
-
-```
-Claude-Office/
-├── src/                    # React frontend
-│   ├── components/         # Character, SlackChat, FurnitureRenderer
-│   ├── hooks/              # useAgentSocket (WebSocket + reconnect)
-│   ├── styles/             # office.css, rooms.css
-│   └── App.tsx             # Main app (agent lifecycle, events, chat)
-├── server/                 # Express + WebSocket server
-│   ├── index.js            # HTTP endpoints + WS broadcast
-│   └── chat-db.js          # SQLite wrapper
-├── scripts/                # Shell scripts
-│   ├── start-office.sh     # Start everything
-│   ├── stop-office.sh      # Stop everything
-│   ├── chat-ai-watcher.sh  # Polls chat, generates Claude replies
-│   └── gather-context.sh   # Git/agent context for prompts
-├── hooks/                  # Claude Code hooks
-│   └── agent-tracker.sh    # Forwards events to server
-├── public/                 # Static assets
-│   └── sprites/            # Pixel art characters + effects
-└── electron/               # Optional Electron wrapper
-```
-
-## Security
-
-- Server binds to `127.0.0.1` only — not exposed to the network
-- Event endpoint (`/event`) requires a Bearer token generated at startup
-- Chat endpoints are unauthenticated (local single-user design)
-- Auth token stored in `~/.agent-office/auth-token` with `0600` permissions
-
-## Desktop App (Electron)
-
-```bash
-npm run dev:electron    # Development
-npm run build:electron  # Build .dmg
-```
-
-## License
-
-MIT
+MIT (W17ant/Claude-Office 상속)

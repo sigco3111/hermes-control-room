@@ -1,3 +1,4 @@
+import { BASE_URL } from '../baseUrl'
 import React, { useRef, useState, useEffect } from 'react'
 import { Agent, AgentState } from '../types'
 import SpeechBubble from './SpeechBubble'
@@ -128,7 +129,7 @@ const Character: React.FC<CharacterProps> = ({ agent, idleDurationMs = 0, zIndex
   void theme
 
   const effectSrc = isTyping
-    ? '/sprites/effects/typing.png'
+    ? '/hermes-control-room/sprites/effects/typing.png'
     : getEffect(agent.state, idleDurationMs, agent.statusText, agent.id, agent.task, agent.role)
 
   return (

@@ -6,7 +6,7 @@ import { BASE_URL } from './baseUrl'
 export type ThemeName = 'default' | 'office'
 
 // Why: 27 Office characters — shuffle-dealt to roles. Sprites live at
-// /sprites/office/characters/{slug}-{front|rear}-{left|right}.png
+// /hermes-control-room/sprites/office/characters/{slug}-{front|rear}-{left|right}.png (prefixed with BASE_URL at runtime).
 const OFFICE_CHARACTERS = [
   'andy-bernard', 'angela-martin', 'bob-vance', 'carol-stills',
   'creed-bratton', 'darryl-philbin', 'david-wallace', 'dwight-schrute',
@@ -130,7 +130,7 @@ export function getCharacterBaseForRole(role: string, defaultBase: string): stri
 }
 
 export function getSpriteDir(): string {
-  return state.name === 'office' ? '/sprites/office/characters' : '/sprites/characters'
+  return state.name === 'office' ? `${BASE_URL}sprites/office/characters` : `${BASE_URL}sprites/characters`
 }
 
 /** Kept signature-compatible for existing callers — agentId ignored; role is the key. */
@@ -346,32 +346,32 @@ export function displayNameFromSlug(slug: string): string {
 // per-role so the same agent keeps the same prop within a session.
 const OFFICE_PROPS_BY_SLUG: Record<string, string[]> = {
   'michael-scott':   [
-    '/sprites/office/props/worlds-best-boss-mug.png',
-    '/sprites/office/props/dundie-award.png',
-    '/sprites/office/props/golden-ticket-box.png',
-    '/sprites/office/props/prison-mike.png',
-    '/sprites/office/props/no-god-please-no.png',
+    `${BASE_URL}sprites/office/props/worlds-best-boss-mug.png`,
+    `${BASE_URL}sprites/office/props/dundie-award.png`,
+    `${BASE_URL}sprites/office/props/golden-ticket-box.png`,
+    `${BASE_URL}sprites/office/props/prison-mike.png`,
+    `${BASE_URL}sprites/office/props/no-god-please-no.png`,
   ],
   'dwight-schrute':  [
-    '/sprites/office/props/cpr-dummy-mask.png',
-    '/sprites/office/props/schrute-buck.png',
+    `${BASE_URL}sprites/office/props/cpr-dummy-mask.png`,
+    `${BASE_URL}sprites/office/props/schrute-buck.png`,
   ],
-  'jim-halpert':     ['/sprites/office/props/jello-stapler.png'],
-  'stanley-hudson':  ['/sprites/office/props/pretzel-day.png'],
-  'jan-levinson':    ['/sprites/office/props/serenity-by-jan-candle.png'],
+  'jim-halpert':     [`${BASE_URL}sprites/office/props/jello-stapler.png`'],
+  'stanley-hudson':  [`${BASE_URL}sprites/office/props/pretzel-day.png`'],
+  'jan-levinson':    [`${BASE_URL}sprites/office/props/serenity-by-jan-candle.png`'],
   // Why: Finer Things Club members share the prop — Oscar, Pam, and Toby.
-  'oscar-martinez':  ['/sprites/office/props/finer-things-club.png'],
-  'pam-beesly':      ['/sprites/office/props/finer-things-club.png'],
-  'toby-flenderson': ['/sprites/office/props/finer-things-club.png'],
+  'oscar-martinez':  [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
+  'pam-beesly':      [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
+  'toby-flenderson': [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
   // Angela: randomized second cat assigned per-role below — not a prop file.
 }
 
 // Why: generic fallback for remaining cast so every Office character has a prop.
 const OFFICE_GENERIC_PROPS = [
-  '/sprites/office/props/dunder-mifflin-logo.png',
-  '/sprites/office/props/dunder-mifflin-paper-box.png',
-  '/sprites/office/props/schrute-buck.png',
-  '/sprites/office/props/golden-ticket-box.png',
+  `${BASE_URL}sprites/office/props/dunder-mifflin-logo.png`,
+  `${BASE_URL}sprites/office/props/dunder-mifflin-paper-box.png`,
+  `${BASE_URL}sprites/office/props/schrute-buck.png`,
+  `${BASE_URL}sprites/office/props/golden-ticket-box.png`,
 ]
 
 const OFFICE_CATS_PATHS = OFFICE_CATS.map(c => `${BASE_URL}sprites/office/cats/${c}.png`)
