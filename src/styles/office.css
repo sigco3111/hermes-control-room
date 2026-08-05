@@ -36,13 +36,13 @@
 
 /* ===== TWIN LAB HEADER ===== */
 .lab-header {
-  height: 56px;
+  height: 48px;
   background: linear-gradient(90deg, var(--lab-navy-0) 0%, var(--lab-navy-1) 60%, var(--lab-navy-2) 100%);
   border-bottom: 1px solid var(--lab-border-soft);
   display: flex;
   align-items: center;
-  padding: 0 14px;
-  gap: 14px;
+  padding: 0 10px;
+  gap: 10px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -64,13 +64,13 @@
   flex-shrink: 0;
 }
 .lab-header__title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: var(--lab-text-bright);
 }
 .lab-header__clock {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--lab-cyan);
   letter-spacing: 1.5px;
@@ -96,18 +96,17 @@
 .lab-header__chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
+  gap: 4px;
+  padding: 4px 8px;
   background: var(--lab-glass-bg);
   border: 1px solid var(--lab-border-soft);
   border-radius: 6px;
   color: var(--lab-text-muted);
-  font-size: 11px;
+  font-size: 10px;
   font-family: 'JetBrains Mono', monospace;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
-  flex-shrink: 0;
   flex-shrink: 0;
 }
 .lab-header__chip:hover {
@@ -121,7 +120,7 @@
   color: var(--lab-cyan);
   box-shadow: 0 0 12px rgba(108, 229, 232, 0.32);
 }
-.lab-header__chip--active  { border-left: 240px solid var(--lab-green);  }
+.lab-header__chip--active  { border-left: 3px solid var(--lab-green); }
 .lab-header__chip--idle    { border-left: 3px solid var(--lab-text-muted); }
 .lab-header__chip--waiting { border-left: 3px solid var(--lab-amber); }
 .lab-header__chip--inactive{ border-left: 3px solid var(--lab-text-dim); }
@@ -140,20 +139,21 @@
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  padding: 4px 10px;
+  padding: 3px 6px;
   background: var(--lab-glass-bg);
   border: 1px solid var(--lab-border-soft);
   border-radius: 6px;
-  min-width: 64px;
+  min-width: 48px;
+  flex-shrink: 0;
 }
 .lab-header__metric-label {
-  font-size: 8px;
+  font-size: 7px;
   color: var(--lab-text-muted);
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 .lab-header__metric-value {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--lab-text-bright);
   font-variant-numeric: tabular-nums;
