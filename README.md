@@ -6,9 +6,57 @@ A pixel art virtual office that visualizes your AI agents working in real-time. 
 
 ## 라이브 데모
 
-- 🟢 https://sigco3111.github.io/hermes-control-room/
-- source: `a08abdd` (Claude-Office 원본, Twin Lab 톤 미적용, 영문 디자인)
+- 🟢 **시뮬레이션**: https://sigco3111.github.io/hermes-control-room/
+- 🟢 **Live (Gist polling)**: https://sigco3111.github.io/hermes-control-room/?live&gist=d04b26e667187cd133a14e833eed4bcb
 - 1개 룸 (Dunder Mifflin 사무실) + 27 cast members
+
+## Live 모드 (Hermes cron ↔ 브라우저)
+
+Live 모드는 GitHub Gist를 이벤트 로그로 사용해 **인프라 $0에 양방향 연동**을 구현합니다.
+
+- `?live` 쿼리 진입 → 브라우저가 5초마다 Gist의 `events.jsonl`을 polling
+- Hermes cron 작업이 Gist에 JSON Lines 1줄을 push → 5-10초 후 모든 연결된 브라우저에 반영
+- Gist ID는 `?gist=<ID>`로 override 가능 (기본값은 데모용 Gist)
+
+### Hermes 운영자가 Gist에 이벤트 push하는 방법
+
+```bash
+GIST_ID=d04b26e667187cd133a14e833eed4bcb
+GITHUB_TOKEN=ghp_...   # gist scope 필요
+
+# 1. 에이전트 스폰 (캐릭터가 책상으로 걸어감)
+curl -X PATCH \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Content-Type: application/json" \
+  "https://api.github.com/gists/$GIST_ID" \
+  -d "{\"files\":{\"events.jsonl\":{\"content\":\"$(cat events.jsonl)\n$(echo '{\"type\":\"agent_spawned\",\"agent\":{\"id\":\"t1\",\"name\":\"Tistory Publisher\",\"role\":\"tistory-publisher\",\"task\":\"발행 시작\"}}')\"}}}"
+
+# 2. 채팅 메시지 (Slack 패널에 즉시 표시)
+curl -X PATCH \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Content-Type: application/json" \
+  "https://api.github.com/gists/$GIST_ID" \
+  -d "{\"files\":{\"events.jsonl\":{\"content\":\"$(cat events.jsonl)\n$(echo '{\"type\":\"chat_message\",\"sender\":\"Tistory\",\"text\":\"발행 완료\",\"role\":\"tistory-publisher\"}')\"}}}"
+```
+
+또는 `gh` CLI로 더 간단히:
+
+```bash
+echo '{"type":"chat_message","sender":"DevOps","text":"cron 점검 완료","role":"devops-engineer"}' \
+  >> events.jsonl
+gh gist edit $GIST_ID --add events.jsonl
+```
+
+### 지원 이벤트 타입
+
+| type | payload | 효과 |
+|------|---------|------|
+| `agent_spawned` | `{agent:{id,name,role,task}}` | 캐릭터 생성 + 책상으로 워킹 |
+| `agent_completed` | `{agentId, result}` | 캐릭터 책상 떠나 문으로 |
+| `agent_working` | `{agentId, status}` | 상태 텍스트 + 채팅 메시지 |
+| `chat_message` | `{sender,text,role?}` | 우측 채팅 패널에 메시지 |
+| `mcp_call` | `{agentId, server, tool}` | MCP 사용 표시 |
+| `mcp_done` | `{agentId, result}` | MCP 완료 |
 
 ## 원본 저장소 (Upstream)
 

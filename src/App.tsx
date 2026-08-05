@@ -8,6 +8,7 @@ import { Agent, OfficeEvent, AGENT_CONFIGS } from './types'
 import { getCurrentPhase, getPhaseLabel, type DayPhase } from './daylight'
 import { ROOMS } from './rooms'
 import { useAgentSocket } from './hooks/useAgentSocket'
+import { useLivePolling } from './hooks/useLivePolling'
 import * as sfx from './sounds'
 import {
   assignSpot,
@@ -42,7 +43,13 @@ const PlacementHelper = lazy(() => import('./components/PlacementHelper'))
 const params = new URLSearchParams(window.location.search)
 const isHelperMode = params.has('helper')
 const isSimMode = !params.has('live')
+const isLiveMode = params.has('live')
 const isVideoMode = params.has('video')
+const DEFAULT_LIVE_GIST_ID = 'd04b26e667187cd133a14e833eed4bcb'
+const liveGistId = params.get('gist') || DEFAULT_LIVE_GIST_ID
+const livePollingUrl = isLiveMode
+  ? `https://gist.githubusercontent.com/sigco3111/${liveGistId}/raw/events.jsonl`
+  : null
 if (params.get('theme') === 'office') {
   _setTheme('office')
 } else if (params.get('theme') === 'hermes' || !params.get('theme')) {
@@ -847,7 +854,8 @@ const App: React.FC = () => {
   // WebSocket connection
   // ---------------------------------------------------------------------------
 
-  useAgentSocket({ onEvent: handleEvent, url: 'ws://localhost:3334/ws', disabled: isSimMode })
+  useAgentSocket({ onEvent: handleEvent, url: 'ws://localhost:3334/ws', disabled: true })
+  useLivePolling({ url: livePollingUrl ?? '', onEvent: handleEvent, enabled: !!livePollingUrl })
 
   // ---------------------------------------------------------------------------
   // Simulation loop — spawns/completes fake agents (only in ?sim mode)
