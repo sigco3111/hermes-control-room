@@ -4,10 +4,6 @@ import './styles/rooms.css'
 import SlackChat, { ChatMessage } from './components/SlackChat'
 import Character from './components/Character'
 import FurnitureRenderer from './components/FurnitureRenderer'
-import { LabHeader, type HermesMetrics } from './components/LabHeader'
-import { LabSidePanel } from './components/LabSidePanel'
-import { LabTicker } from './components/LabTicker'
-import type { HermesRoomId } from './hermesRooms'
 import { Agent, OfficeEvent, AGENT_CONFIGS } from './types'
 import { getCurrentPhase, getPhaseLabel, type DayPhase } from './daylight'
 import { ROOMS } from './rooms'
@@ -40,17 +36,17 @@ import {
 // ---------------------------------------------------------------------------
 // Placement helper — loaded via ?helper query param
 // ---------------------------------------------------------------------------
+// Hermes fork: default theme 'hermes' (한글 부서 라벨), opt-in /the-office slash command flips to Dunder Mifflin.
+import { setTheme as _setTheme } from './theme'
 const PlacementHelper = lazy(() => import('./components/PlacementHelper'))
 const params = new URLSearchParams(window.location.search)
 const isHelperMode = params.has('helper')
-// 헤르메스 3D 관제실: 브라우저 전용 빌드이므로 항상 시뮬레이션 모드 기본값
-// ?sim 또는 ?video가 명시되어 있으면 유지, ?live 있으면 시뮬레이션 비활성 (서버 연결 시도)
 const isSimMode = !params.has('live')
 const isVideoMode = params.has('video')
-// 헤르메스 fork: 기본 테마를 office(드미스 패턴)로 + 헤르메스 부서로 데이터 교체
-import { setTheme as _setTheme } from './theme'
-if (params.get('theme') === 'hermes' || params.get('theme') === 'office' || !params.get('theme')) {
+if (params.get('theme') === 'office') {
   _setTheme('office')
+} else if (params.get('theme') === 'hermes' || !params.get('theme')) {
+  _setTheme('hermes')
 }
 
 // ---------------------------------------------------------------------------
@@ -206,58 +202,58 @@ interface PendingEffect {
 const SIM_SCENARIOS = [
   {
     role: 'security-auditor',
-    task: 'Auditing auth middleware for session token vulnerabilities',
+    task: '인증 미들웨어 세션 토큰 취약점 감사',
     slackMessages: [
-      '🔍 scanning auth middleware...',
-      '⚠️ found session tokens stored in localStorage — flagging',
-      '🔐 checking CORS configuration on API endpoints',
-      '📋 reviewing JWT expiry and refresh flow',
-      '✅ auth audit complete — 2 issues found, PRs drafted',
+      '🔍 인증 미들웨어 스캔 중...',
+      '⚠️ localStorage에 세션 토큰 저장 발견 — 플래그 처리',
+      '🔐 API 엔드포인트 CORS 설정 점검',
+      '📋 JWT 만료 및 갱신 흐름 검토',
+      '✅ 인증 감사 완료 — 이슈 2건 발견, PR 초안 작성',
     ],
   },
   {
     role: 'frontend-developer',
-    task: 'Building responsive dashboard with real-time charts',
+    task: '실시간 차트 반응형 대시보드 구축',
     slackMessages: [
-      '🎨 scaffolding dashboard layout with grid system',
-      '📊 integrating chart library — testing with live data',
-      '💅 adding dark mode support to all components',
-      '🧪 writing component tests for chart rendering',
-      '🚀 dashboard ready for review',
+      '🎨 그리드 시스템으로 대시보드 레이아웃 설계',
+      '📊 차트 라이브러리 통합 — 실시간 데이터로 테스트',
+      '💅 모든 컴포넌트 다크 모드 지원 추가',
+      '🧪 차트 렌더링 컴포넌트 테스트 작성',
+      '🚀 대시보드 리뷰 준비 완료',
     ],
   },
   {
     role: 'code-reviewer',
-    task: 'Reviewing PR #487 — payment processing refactor',
+    task: 'PR #487 리뷰 — 결제 처리 리팩토링',
     slackMessages: [
-      '👀 opening PR #487 — 23 files changed',
-      '🔍 checking error handling in payment flow',
-      '💡 suggesting async/await instead of .then chains',
-      '⚡ found a potential race condition in webhook handler',
-      '✅ review complete — approved with 3 suggestions',
+      '👀 PR #487 오픈 — 변경된 파일 23개',
+      '🔍 결제 흐름 오류 처리 점검',
+      '💡 .then 체인 대신 async/await 제안',
+      '⚡ 웹훅 핸들러에서 잠재적 레이스 컨디션 발견',
+      '✅ 리뷰 완료 — 제안 3건과 함께 승인',
     ],
   },
 ]
 
 // Extra random slack chatter between agents
 const SIM_CHATTER = [
-  { sender: 'Debugger', role: 'debugger', msg: 'found a null pointer in the auth handler, patching now' },
-  { sender: 'Frontend', role: 'frontend-developer', msg: 'the new dark mode toggle is looking clean' },
-  { sender: 'Security', role: 'security-auditor', msg: 'heads up — that API key should be in env vars, not hardcoded' },
-  { sender: 'Reviewer', role: 'code-reviewer', msg: 'lgtm on the PR, just one nit on the error handling' },
-  { sender: 'DBA', role: 'database-architect', msg: 'added an index on user_id, queries are 10x faster now' },
-  { sender: 'DevOps', role: 'devops-engineer', msg: 'staging deploy is green, promoting to prod' },
-  { sender: 'Claude', role: 'assistant', msg: 'the printer jammed again. third time today.' },
-  { sender: 'Tester', role: 'test-engineer', msg: 'coverage is at 94%, just need the edge cases' },
-  { sender: 'PerfEng', role: 'performance-engineer', msg: 'shaved 200ms off the initial load, LCP is under 2s' },
-  { sender: 'Frontend', role: 'frontend-developer', msg: 'responsive layout done, looks great on mobile' },
-  { sender: 'Claude', role: 'assistant', msg: 'someone get the coffee machine, its making that sound again' },
-  { sender: 'Architect', role: 'architect-reviewer', msg: 'the new module boundary looks solid, good separation' },
-  { sender: 'AI Eng', role: 'ai-engineer', msg: 'embeddings are indexed, RAG pipeline is live' },
-  { sender: 'TS Pro', role: 'typescript-pro', msg: 'fixed the generic inference, no more any casts' },
-  { sender: 'Antony', role: 'boss', msg: 'anyone want a Red Bull?' },
-  { sender: 'Antony', role: 'boss', msg: 'ship it, we\'ll fix it in prod' },
-  { sender: 'Antony', role: 'boss', msg: 'how are we looking on the dashboard?' },
+  { sender: 'Debugger', role: 'debugger', msg: '인증 핸들러 null 포인터 발견, 패치 진행 중' },
+  { sender: 'Frontend', role: 'frontend-developer', msg: '새 다크 모드 토글 깔끔하게 나옴' },
+  { sender: 'Security', role: 'security-auditor', msg: '주의 — 그 API 키는 env vars에 들어가야지, 하드코딩 말고' },
+  { sender: 'Reviewer', role: 'code-reviewer', msg: 'PR LGTM, 오류 처리 한 군데만 짚어주면 됨' },
+  { sender: 'DBA', role: 'database-architect', msg: 'user_id 인덱스 추가함, 쿼리 10배 빨라짐' },
+  { sender: 'DevOps', role: 'devops-engineer', msg: '스테이징 배포 그린, 프로덕션 승격' },
+  { sender: 'Claude', role: 'assistant', msg: '프린터 또 걸렸음. 오늘 세 번째.' },
+  { sender: 'Tester', role: 'test-engineer', msg: '커버리지 94%, 엣지 케이스만 남음' },
+  { sender: 'PerfEng', role: 'performance-engineer', msg: '초기 로딩 200ms 단축, LCP 2초 미만' },
+  { sender: 'Frontend', role: 'frontend-developer', msg: '반응형 레이아웃 완료, 모바일에서도 잘 나옴' },
+  { sender: 'Claude', role: 'assistant', msg: '커피머신 누가 봐줘, 또 이상한 소리 남' },
+  { sender: 'Architect', role: 'architect-reviewer', msg: '새 모듈 경계 깔끔함, 분리가 잘 됨' },
+  { sender: 'AI Eng', role: 'ai-engineer', msg: '임베딩 인덱싱 완료, RAG 파이프라인 라이브' },
+  { sender: 'TS Pro', role: 'typescript-pro', msg: '제네릭 추론 수정, any 캐스트 제거' },
+  { sender: 'Hermes', role: 'boss', msg: '레드불 마실 사람?' },
+  { sender: 'Hermes', role: 'boss', msg: '그냥 배포, 프로덕션에서 고치자' },
+  { sender: 'Hermes', role: 'boss', msg: '대시보드 어때?' },
 ]
 
 // Dunder Mifflin themed chatter — used when /the-office is active
@@ -320,16 +316,6 @@ const App: React.FC = () => {
 
   // Boss interaction effect (shown above boss character)
   const [bossEffect, setBossEffect] = useState<string | null>(null)
-
-  // Twin Lab header: selected department + mock metrics
-  const [selectedRoomId, setSelectedRoomId] = useState<HermesRoomId | null>(null)
-  const [metrics] = useState<HermesMetrics>({
-    activeCrons: 19,
-    memoryUsed: 2189,
-    memoryCap: 2200,
-    tistoryToday: 0,
-    sessionCount: 1,
-  })
 
   const handleFurnitureClick = useCallback((itemId: string) => {
     const interaction = getInteraction(itemId)
@@ -520,10 +506,10 @@ const App: React.FC = () => {
     if (arrivedRef.current) return
     arrivedRef.current = true
     const bossCfg = AGENT_CONFIGS[BOSS_ROLE] ?? AGENT_CONFIGS['default']
-    addMsg(bossCfg.title, BOSS_ROLE, bossCfg.color, '👑 clocked in')
+    addMsg(bossCfg.title, BOSS_ROLE, bossCfg.color, '🛎 출근했습니다')
     const claudeCfg = AGENT_CONFIGS[CLAUDE_ROLE] ?? AGENT_CONFIGS['default']
     setTimeout(() => {
-      addMsg(claudeCfg.title, CLAUDE_ROLE, claudeCfg.color, '🤖 clocked in')
+      addMsg(claudeCfg.title, CLAUDE_ROLE, claudeCfg.color, '🤖 출근했습니다')
     }, 1500)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -902,7 +888,7 @@ const App: React.FC = () => {
             },
           })
           timers.push(setTimeout(() => {
-            addMsg(displayName, role, cfg.color, `clocked in — ${displayName} reporting`)
+            addMsg(displayName, role, cfg.color, `🛎 ${displayName} 출근 보고`)
           }, 1000))
         }, initialDelay))
       }
@@ -1171,7 +1157,7 @@ const App: React.FC = () => {
     // 0-3s: Office is just Antony, settling in
     timers.push(setTimeout(() => {
       addMsg(bossCfg.title, BOSS_ROLE, bossCfg.color,
-        officeSim0 ? "👑 World's Best Boss clocked in, let's sell some paper" : '👑 clocked in, lets get to work')
+        officeSim0 ? "👑 World's Best Boss 출근, 종이 좀 팔아보자" : '🛎 출근, 작업 시작하겠습니다')
     }, 2000))
 
     // 4s: Antony types a question in Slack
@@ -1783,16 +1769,12 @@ const App: React.FC = () => {
 
   return (
     <div className="app-wrapper">
-      <LabHeader
-        metrics={metrics}
-        selectedRoomId={selectedRoomId}
-        onSelectRoom={setSelectedRoomId}
-      />
       <div className="title-bar">
         <div className="title-bar-dot" style={{ background: '#ff5f57' }} />
         <div className="title-bar-dot" style={{ background: '#febc2e' }} />
         <div className="title-bar-dot" style={{ background: '#28c840' }} />
-        <span className="title-bar-text">CLAUDE CODE — AGENT OFFICE</span>
+        <span className="title-bar-text">HERMES CONTROL ROOM</span>
+        <span className="title-bar-clock">{formatHHMM(new Date())}</span>
         <button
           className="title-bar-daynight"
           onClick={() => setDayNightMode(prev =>
@@ -1931,14 +1913,6 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      <LabSidePanel
-        selectedRoomId={selectedRoomId}
-        onClose={() => setSelectedRoomId(null)}
-      />
-      </div>
-
-      <LabTicker />
-
       <SlackChat
         messages={messages}
         muted={muted}
@@ -1966,8 +1940,15 @@ const App: React.FC = () => {
           ))
         }}
       />
+      </div>
     </div>
   )
+}
+
+function formatHHMM(d: Date): string {
+  const h = String(d.getHours()).padStart(2, '0')
+  const m = String(d.getMinutes()).padStart(2, '0')
+  return `${h}:${m}`
 }
 
 export default App

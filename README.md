@@ -10,6 +10,25 @@ A pixel art virtual office that visualizes your AI agents working in real-time. 
 - source: `a08abdd` (Claude-Office 원본, Twin Lab 톤 미적용, 영문 디자인)
 - 1개 룸 (Dunder Mifflin 사무실) + 27 cast members
 
+## 원본 저장소 (Upstream)
+
+본 프로젝트는 아래 저장소에서 포크되었습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **Upstream** | [`W17ant/Claude-Office`](https://github.com/W17ant/Claude-Office) |
+| **Fork** | [`sigco3111/hermes-control-room`](https://github.com/sigco3111/hermes-control-room) |
+| **라이선스** | MIT (상속) |
+| **기준 커밋** | `a08abdd` — Twin Lab 톤 미적용, 영문 디자인 |
+| **포크 목적** | 헤르메스 자동화 시스템 8개 부서 시각화 + Dunder Mifflin 테마 추가 |
+
+### 주요 포크 변경점
+
+- Hermes Control Room 리브랜딩 (8개 부서: Tistory / 브리핑 / 자동화 / 리서치 / Notion / 트레이딩 / 미디어 / DevOps)
+- `/the-office` 슬래시 커맨드로 The Office (Dunder Mifflin) 테마 토글
+- 27명 cast 멤버 (Michael, Jim, Pam, Dwight 등) + 시그니처 소품 오버레이
+- gh-pages 서브경로 대응 (`post-build.sh`로 sprite/room 경로 prefix 강제 적용)
+
 ## Update — Dunder Mifflin mode
 
 Type `/the-office` in the Slack chat panel to flip the whole office into a Scranton-branch tribute. The room, the cast, and the chatter all swap over — Michael Scott runs the place, Jim is your assistant, and Dwight guards the beet cellar.
@@ -110,4 +129,4 @@ git push -u origin gh-pages --force
 
 ## 라이선스
 
-MIT (W17ant/Claude-Office 상속)
+MIT — [`W17ant/Claude-Office`](https://github.com/W17ant/Claude-Office) 상속. 원본 저작권 고지 및 라이선스 전문은 upstream 저장소를 참조하세요.

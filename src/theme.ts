@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from 'react'
 import { BASE_URL } from './baseUrl'
 
-export type ThemeName = 'default' | 'office'
+export type ThemeName = 'default' | 'office' | 'hermes'
 
 // Why: 27 Office characters — shuffle-dealt to roles. Sprites live at
 // /hermes-control-room/sprites/office/characters/{slug}-{front|rear}-{left|right}.png (prefixed with BASE_URL at runtime).
@@ -47,8 +47,11 @@ function loadInitial(): ThemeState {
     if (saved === 'office') {
       return { name: 'office', castByRole: {}, angelaRole: null, angelaCat: null }
     }
+    if (saved === 'hermes') {
+      return { name: 'hermes', castByRole: {}, angelaRole: null, angelaCat: null }
+    }
   } catch {}
-  return { name: 'default', castByRole: {}, angelaRole: null, angelaCat: null }
+  return { name: 'hermes', castByRole: {}, angelaRole: null, angelaCat: null }
 }
 
 function persist() {
@@ -77,7 +80,7 @@ export function setTheme(name: ThemeName) {
 }
 
 export function toggleTheme() {
-  setTheme(state.name === 'office' ? 'default' : 'office')
+  setTheme(state.name === 'office' ? 'hermes' : 'office')
 }
 
 export function subscribeTheme(fn: () => void): () => void {
@@ -89,7 +92,7 @@ export function useTheme(): ThemeName {
   return useSyncExternalStore(
     (cb) => subscribeTheme(cb),
     () => state.name,
-    () => 'default',
+    () => 'hermes',
   )
 }
 
@@ -143,7 +146,7 @@ export function getRoomImage(phase: 'day' | 'night'): string {
   if (state.name === 'office') {
     return phase === 'night' ? `${BASE_URL}rooms/office-night-dm.png` : `${BASE_URL}rooms/office-day-dm.png`
   }
-  return phase === 'night' ? `${BASE_URL}rooms/office-night.png` : `${BASE_URL}rooms/office-day.png`
+  return phase === 'night' ? `${BASE_URL}rooms/office-night-dm.png` : `${BASE_URL}rooms/office-day-dm.png`
 }
 
 /** Returns the ROLE currently cast as Angela (if any), plus cat sprite path. */
@@ -228,21 +231,21 @@ const OFFICE_WATER = [
 ]
 
 const DEFAULT_SPAWN = [
-  'reporting for duty!', 'clocked in', 'ready to ship',
-  'coffee first, then code', "let's do this", 'opening vim...', 'pulling latest main',
+  '🛎 출근했습니다', '✅ 업무 개시', '🚀 작업 준비 완료',
+  '☕ 커피 한 잔 하고 시작', '📋 오늘 할 일 정리', '🔍 점검 시작', '📥 최신본 가져오기',
 ]
 const DEFAULT_WORK = [
-  'on it', 'typing furiously', 'in the zone', 'making progress',
-  'checking the docs', 'git blame time', 'stack overflow to the rescue',
+  '💻 작업 중', '⌨️ 타이핑 중', '🎯 집중 모드', '📈 진행 중',
+  '📚 문서 확인', '🔎 원인 분석', '🧪 테스트 진행',
 ]
 const DEFAULT_DONE = [
-  'task complete!', 'shipped it', 'PR opened', 'done and dusted',
-  'LGTM', 'merged to main', 'deployed',
+  '✅ 작업 완료!', '🚀 배포 완료', '📝 PR 오픈', '✔️ 마무리',
+  '👍 LGTM', '🔀 main 머지 완료', '🌐 배포 끝',
 ]
-const DEFAULT_COFFEE = ['brb, coffee', 'need caffeine', 'grabbing a cup', 'coffee run']
+const DEFAULT_COFFEE = ['☕ 커피 타임', '🥤 카페인 충전', '☕ 한 잔 마시고', '🥐 잠깐 휴식']
 const DEFAULT_WATER = [
-  'stay hydrated', 'h2o break', 'water run', 'refilling bottle',
-  'hydration check', 'quick water break',
+  '💧 수분 보충', '🚰 물 마시는 중', '💧 물 리필', '🧃 단잠 채우기',
+  '💧 수분 체크', '🥛 가벼운 휴식',
 ]
 
 export function themedSpawn(): string  { return pick(state.name === 'office' ? OFFICE_SPAWN  : DEFAULT_SPAWN) }
