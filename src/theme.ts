@@ -356,13 +356,13 @@ const OFFICE_PROPS_BY_SLUG: Record<string, string[]> = {
     `${BASE_URL}sprites/office/props/cpr-dummy-mask.png`,
     `${BASE_URL}sprites/office/props/schrute-buck.png`,
   ],
-  'jim-halpert':     [`${BASE_URL}sprites/office/props/jello-stapler.png`'],
-  'stanley-hudson':  [`${BASE_URL}sprites/office/props/pretzel-day.png`'],
-  'jan-levinson':    [`${BASE_URL}sprites/office/props/serenity-by-jan-candle.png`'],
+  'jim-halpert':     [`${BASE_URL}sprites/office/props/jello-stapler.png`],
+  'stanley-hudson':  [`${BASE_URL}sprites/office/props/pretzel-day.png`],
+  'jan-levinson':    [`${BASE_URL}sprites/office/props/serenity-by-jan-candle.png`],
   // Why: Finer Things Club members share the prop — Oscar, Pam, and Toby.
-  'oscar-martinez':  [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
-  'pam-beesly':      [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
-  'toby-flenderson': [`${BASE_URL}sprites/office/props/finer-things-club.png`'],
+  'oscar-martinez':  [`${BASE_URL}sprites/office/props/finer-things-club.png`],
+  'pam-beesly':      [`${BASE_URL}sprites/office/props/finer-things-club.png`],
+  'toby-flenderson': [`${BASE_URL}sprites/office/props/finer-things-club.png`],
   // Angela: randomized second cat assigned per-role below — not a prop file.
 }
 
