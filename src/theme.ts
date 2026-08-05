@@ -162,23 +162,29 @@ function slugToName(slug: string): string {
 
 /** Swap sender display name to the cast Office character when theme is active. */
 const HERMES_DEPARTMENT_DISPLAY: Record<string, string> = {
-  // Mapping based on the provided 8 Hermes departments
-  'boss': 'Hermes Control Room',
-  'assistant': 'Tistory Publishing',
-  'debugger': 'Error Monitoring',
+  'boss': 'Hermes 관제실',
+  'assistant': 'Tistory 발행',
+  'debugger': '에러 모니터링',
   'code-reviewer': 'Knowledge Graph',
-  'frontend-developer': 'Self Improvement',
-  'fullstack-developer': 'Trend Monitoring',
+  'frontend-developer': '자기 개선',
+  'fullstack-developer': '트렌드 모니터링',
   'test-engineer': 'Notebook LM',
-  'security-auditor': 'Blog/Newsletter',
-  'devops-engineer': 'Infra/Sync',
-  // Add more if needed
+  'security-auditor': '블로그/뉴스레터',
+  'devops-engineer': '인프라 동기화',
+  'database-architect': 'DB 아키텍트',
+  'architect-reviewer': '아키텍트 리뷰',
+  'performance-engineer': '성능 엔지니어',
+  'typescript-pro': 'TS 프로',
+  'ai-engineer': 'AI 엔지니어',
+  'prompt-engineer': '프롬프트 엔지니어',
+  'general-purpose': '범용 에이전트',
+  'Explore': '코드베이스 탐색',
 }
 
 export function themedDisplayName(role: string, fallback: string): string {
-  if (state.name !== 'office') return fallback
-  // Prefer explicit Hermes department mapping
+  // Why: Hermes default 모드와 office 모드 모두에서 한글 부서 라벨 우선 적용
   if (HERMES_DEPARTMENT_DISPLAY[role]) return HERMES_DEPARTMENT_DISPLAY[role]
+  if (state.name !== 'office') return fallback
   const cast = state.castByRole[role]
   if (!cast) {
     // Force-assign so the name matches the avatar on first render

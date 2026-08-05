@@ -140,7 +140,7 @@ const SlackChat: React.FC<SlackChatProps> = ({ messages, muted, volume, onToggle
           <div
             className={`slack-cron-toggle ${cronPaused ? 'paused' : 'active'}`}
             onClick={toggleCron}
-            title={cronPaused ? 'Chat monitor paused — click to resume' : 'Chat monitor active — click to pause'}
+            title={cronPaused ? '채팅 모니터 일시정지 — 클릭하여 재개' : '채팅 모니터 동작 중 — 클릭하여 일시정지'}
           >
             <div className="slack-cron-track">
               <div className="slack-cron-thumb" />
@@ -157,7 +157,7 @@ const SlackChat: React.FC<SlackChatProps> = ({ messages, muted, volume, onToggle
             value={Math.round(volume * 100)}
             onChange={e => onVolumeChange(Number(e.target.value) / 100)}
             className="slack-volume-slider"
-            title={`Volume: ${Math.round(volume * 100)}%`}
+            title={`음량: ${Math.round(volume * 100)}%`}
           />
         </div>
       </div>
@@ -206,7 +206,7 @@ const SlackChat: React.FC<SlackChatProps> = ({ messages, muted, volume, onToggle
                           key={i}
                           className="slack-reaction"
                           onClick={() => handleReaction(msg, r)}
-                          title="Click to remove"
+                          title="클릭하여 제거"
                         >{r}</span>
                       ))}
                     </div>
@@ -259,7 +259,7 @@ const SlackChat: React.FC<SlackChatProps> = ({ messages, muted, volume, onToggle
           <input
             type="text"
             className="slack-input-field"
-            placeholder="Message #office-general"
+            placeholder="메시지 입력 — #office-general"
             value={inputText}
             onChange={e => {
               const val = e.target.value

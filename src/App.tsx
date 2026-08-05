@@ -120,8 +120,8 @@ function createBoss(): Agent {
     assignedRoom: 'main-office',
     assignedSpotId: spot.id,
     spriteFacing: spot.spriteFacing,
-    task: 'Running the show',
-    statusText: 'clocked in',
+    task: '관제실 운영',
+    statusText: '출근했습니다',
     color: cfg.color,
     emoji: cfg.emoji,
     hiredAt: Date.now(),
@@ -152,8 +152,8 @@ function createClaude(): Agent {
     assignedRoom: 'main-office',
     assignedSpotId: spot.id,
     spriteFacing: spot.spriteFacing,
-    task: 'Office assistant',
-    statusText: 'clocked in',
+    task: '오피스 어시스턴트',
+    statusText: '출근했습니다',
     color: cfg.color,
     emoji: cfg.emoji,
     hiredAt: Date.now() + 500, // arrives just after the boss
@@ -403,7 +403,7 @@ const App: React.FC = () => {
               state: 'walking-to-desk' as const,
               targetPosition: { ...a.deskPosition },
               pathQueue: computePath(a.position, a.deskPosition),
-              statusText: 'back to work',
+              statusText: '업무 복귀',
             }
           }))
         }, interaction.duration + 500)
@@ -721,21 +721,21 @@ const App: React.FC = () => {
             // Boss replies to completed tasks
             const bossCfg = AGENT_CONFIGS[BOSS_ROLE] ?? AGENT_CONFIGS['default']
             const bossReplies = [
-              `nice work ${a.name} 👊`,
-              `solid 🔥`,
-              `ship it!`,
-              `great stuff, grab a Red Bull`,
-              `legend 💯`,
-              `good job, who\'s next?`,
-              `that was quick, another one?`,
-              `clean work 👌`,
-              `cheers ${a.name}`,
-              `merged. next task loading...`,
+              `수고했어요 ${a.name} 👊`,
+              `굳습니다 🔥`,
+              `바로 배포!`,
+              `잘했어요, 레드불 한 잔 어때요`,
+              `전설 💯`,
+              `좋아요, 다음은 누구?`,
+              `빠르네요, 다음 작업은?`,
+              `깔끔 👌`,
+              `감사합니다 ${a.name}`,
+              `머지 완료. 다음 작업 로딩 중...`,
             ]
             // Why: when Office theme is on, Michael Scott occasionally lands his signature line.
             const isMichael = getTheme() === 'office'
             const reply = isMichael && Math.random() < 0.25
-              ? `That's what she said 😏`
+              ? `그녀가 그랬죠 😏`
               : bossReplies[Math.floor(Math.random() * bossReplies.length)]
             effects.push({
               msg: { sender: bossCfg.title, role: BOSS_ROLE, color: bossCfg.color, text: reply },
@@ -967,7 +967,7 @@ const App: React.FC = () => {
           if (staff.length === 0) return prev
           const speaker = staff[Math.floor(Math.random() * staff.length)]
           const lines = OFFICE_SIM_TOOL_MESSAGES[ROLES[parseInt(speaker.role.split('-')[2], 10) % ROLES.length]] ?? []
-          const line = lines[Math.floor(Math.random() * lines.length)] ?? 'selling paper'
+          const line = lines[Math.floor(Math.random() * lines.length)] ?? '종이 팔고 있음'
           const cfg = AGENT_CONFIGS[ROLES[0]] ?? AGENT_CONFIGS['default']
           addMsg(speaker.name, speaker.role, cfg.color, line)
           return prev
@@ -1122,21 +1122,21 @@ const App: React.FC = () => {
           id: 'sim-explore',
           name: exploreCfg.title,
           role: 'Explore',
-          task: 'Searching codebase for API endpoint patterns',
+          task: '코드베이스에서 API 엔드포인트 패턴 검색',
         },
       })
       timers.push(setTimeout(() => {
-        addMsg(exploreCfg.title, 'Explore', exploreCfg.color, 'starting: Searching codebase for API endpoint patterns')
+        addMsg(exploreCfg.title, 'Explore', exploreCfg.color, 'starting: 코드베이스에서 API 엔드포인트 패턴 검색')
       }, 1200))
       // Explorer completes and leaves after 20s
       timers.push(setTimeout(() => {
         handleEvent({
           type: 'agent_completed',
           agentId: 'sim-explore',
-          result: 'Found 12 API endpoints across 4 route files',
+          result: '4개 라우트 파일에서 12개 API 엔드포인트 발견',
         })
         timers.push(setTimeout(() => {
-          addMsg(exploreCfg.title, 'Explore', exploreCfg.color, 'done: Found 12 API endpoints across 4 route files')
+          addMsg(exploreCfg.title, 'Explore', exploreCfg.color, 'done: 4개 라우트 파일에서 12개 API 엔드포인트 발견')
         }, 800))
       }, 20000))
     }, 25000))
@@ -1146,11 +1146,11 @@ const App: React.FC = () => {
       handleEvent({
         type: 'agent_completed',
         agentId: 'sim-code-reviewer',
-        result: 'PR #487 approved — ready to merge',
+        result: 'PR #487 승인 완료 — 머지 준비',
       })
       timers.push(setTimeout(() => {
         const reviewCfg = AGENT_CONFIGS['code-reviewer'] ?? AGENT_CONFIGS['default']
-        addMsg(reviewCfg.title, 'code-reviewer', reviewCfg.color, 'done: PR #487 approved — ready to merge')
+        addMsg(reviewCfg.title, 'code-reviewer', reviewCfg.color, 'done: PR #487 승인 완료 — 머지 준비')
       }, 800))
       // Replacement agent arrives
       timers.push(setTimeout(() => {
@@ -1161,11 +1161,11 @@ const App: React.FC = () => {
             id: 'sim-debugger',
             name: cfg.title,
             role: 'debugger',
-            task: 'Investigating null pointer in payment webhook handler',
+            task: '결제 웹훅 핸들러의 null 포인터 조사',
           },
         })
         timers.push(setTimeout(() => {
-          addMsg(cfg.title, 'debugger', cfg.color, 'starting: Investigating null pointer in payment webhook handler')
+          addMsg(cfg.title, 'debugger', cfg.color, 'starting: 결제 웹훅 핸들러의 null 포인터 조사')
         }, 1200))
       }, 8000))
     }, 50000))
@@ -1219,14 +1219,14 @@ const App: React.FC = () => {
     // Why: swap to Office-themed chatter when /the-office mode is on at sim start
     const isOfficeSim = getTheme() === 'office'
     const defaultToolMessages = [
-      { t: 16000, sender: 'Security', role: 'security-auditor', text: '⚡ reading src/auth/middleware.ts' },
-      { t: 18000, sender: 'Reviewer', role: 'code-reviewer', text: '⚡ running: grep -r "jwt" src/' },
-      { t: 20000, sender: 'Security', role: 'security-auditor', text: '⚠️ session tokens stored in localStorage — XSS risk' },
-      { t: 22000, sender: 'Frontend', role: 'frontend-developer', text: '⚡ reading src/hooks/useAuth.ts' },
-      { t: 24000, sender: 'Reviewer', role: 'code-reviewer', text: '🔍 checking CORS config on /api/auth endpoints' },
-      { t: 26000, sender: 'Security', role: 'security-auditor', text: '🚨 JWT refresh token has no expiry set' },
-      { t: 28000, sender: 'Frontend', role: 'frontend-developer', text: '⚡ editing src/auth/tokenStore.ts' },
-      { t: 30000, sender: 'Reviewer', role: 'code-reviewer', text: '💡 suggesting httpOnly cookies instead of localStorage' },
+      { t: 16000, sender: 'Security', role: 'security-auditor', text: '⚡ src/auth/middleware.ts 읽는 중' },
+      { t: 18000, sender: 'Reviewer', role: 'code-reviewer', text: '⚡ 실행: grep -r "jwt" src/' },
+      { t: 20000, sender: 'Security', role: 'security-auditor', text: '⚠️ localStorage에 세션 토큰 저장 — XSS 위험' },
+      { t: 22000, sender: 'Frontend', role: 'frontend-developer', text: '⚡ src/hooks/useAuth.ts 읽는 중' },
+      { t: 24000, sender: 'Reviewer', role: 'code-reviewer', text: '� /api/auth 엔드포인트 CORS 설정 확인' },
+      { t: 26000, sender: 'Security', role: 'security-auditor', text: '🚨 JWT 리프레시 토큰에 만료 설정 없음' },
+      { t: 28000, sender: 'Frontend', role: 'frontend-developer', text: '⚡ src/auth/tokenStore.ts 수정 중' },
+      { t: 30000, sender: 'Reviewer', role: 'code-reviewer', text: '💡 localStorage 대신 httpOnly 쿠키 제안' },
     ]
     const toolMessages = isOfficeSim
       ? defaultToolMessages.map((m, i) => {
@@ -1241,9 +1241,9 @@ const App: React.FC = () => {
       }, t))
     })
 
-    // 25s: Antony types a follow-up
+    // 25s: Hermes types a follow-up
     timers.push(setTimeout(() => {
-      setAutoTypeText(isOfficeSim ? (OFFICE_SIM_BOSS_PROMPTS[1] ?? 'how bad is the localStorage issue?') : 'how bad is the localStorage issue?')
+      setAutoTypeText(isOfficeSim ? (OFFICE_SIM_BOSS_PROMPTS[1] ?? 'how bad is the localStorage issue?') : 'localStorage 이슈 얼마나 심각해?')
     }, 25000))
 
     // 27s: Agent replies
@@ -1252,23 +1252,23 @@ const App: React.FC = () => {
       addMsg('Security', 'security-auditor', cfg.color,
         isOfficeSim
           ? 'critical — Dwight-level bad. any XSS gives full account takeover. moving to httpOnly cookies now'
-          : 'critical — any XSS gives full account takeover. moving to httpOnly cookies now')
+          : '심각 — XSS 발생 시 계정 탈취 가능. httpOnly 쿠키로 전환 중')
     }, 27500))
 
     // 30s: Random chatter
     timers.push(setTimeout(() => {
       const cfg = AGENT_CONFIGS['frontend-developer'] ?? AGENT_CONFIGS['default']
       addMsg('Frontend', 'frontend-developer', cfg.color,
-        isOfficeSim ? 'I can handle the cookie migration — easier than organizing the Dundies' : 'I can handle the cookie migration on the client side')
+        isOfficeSim ? 'I can handle the cookie migration — easier than organizing the Dundies' : '쿠키 마이그레이션 클라이언트 쪽에서 처리 가능')
     }, 30000))
 
     timers.push(setTimeout(() => {
       const cfg = AGENT_CONFIGS['code-reviewer'] ?? AGENT_CONFIGS['default']
       addMsg('Reviewer', 'code-reviewer', cfg.color,
-        isOfficeSim ? 'lgtm. ship it to Stamford, boom. roasted.' : 'lgtm on the approach, lets ship it')
+        isOfficeSim ? 'lgtm. ship it to Stamford, boom. roasted.' : 'LGTM, 이대로 배포합시다')
     }, 32000))
 
-    // 33s: Antony checks status with a slash command
+    // 33s: Hermes checks status with a slash command
     timers.push(setTimeout(() => {
       setAutoTypeText('/status')
     }, 33000))
@@ -1277,23 +1277,23 @@ const App: React.FC = () => {
     timers.push(setTimeout(() => {
       handleEvent({
         type: 'agent_spawned',
-        agent: { id: 'vid-explore', name: 'Explorer', role: 'Explore', task: 'Scanning auth-related files across codebase' },
+        agent: { id: 'vid-explore', name: 'Explorer', role: 'Explore', task: '인증 관련 파일 코드베이스 전체 스캔' },
       })
     }, 35000))
 
     // 38s: Pizza delivery event!
     timers.push(setTimeout(() => {
       addMsg('system', 'default', '#8b8d91',
-        officeSim0 ? '🥨 IT\'S PRETZEL DAY' : '🍕 Pizza has arrived! Free lunch!', true)
+        officeSim0 ? '🥨 프레첼 데이입니다!' : '🍕 피자가 도착했습니다! 점심 무료!', true)
       addMsg(bossCfg.title, BOSS_ROLE, bossCfg.color,
-        officeSim0 ? "You don't understand. It's pretzel day." : 'Pizza in the lobby!')
+        officeSim0 ? "You don't understand. It's pretzel day." : '로비에 피자 도착!')
       // Move all agents to door
       setAgents(prev => prev.map(a => ({
         ...a,
         state: 'walking-to-desk' as const,
         targetPosition: { x: 67.5, y: 48.9 },
         pathQueue: computePath(a.position, { x: 67.5, y: 48.9 }),
-        statusText: 'Pizza Delivery',
+        statusText: '피자 배달',
       })))
       // Back to desks after 5s
       timers.push(setTimeout(() => {
@@ -1302,7 +1302,7 @@ const App: React.FC = () => {
           state: 'walking-to-desk' as const,
           targetPosition: { ...a.deskPosition },
           pathQueue: computePath(a.position, a.deskPosition),
-          statusText: 'back to work',
+          statusText: '업무 복귀',
         })))
       }, 5000))
     }, 38000))
@@ -1311,7 +1311,7 @@ const App: React.FC = () => {
     timers.push(setTimeout(() => {
       const cfg = AGENT_CONFIGS['security-auditor'] ?? AGENT_CONFIGS['default']
       addMsg('Security', 'security-auditor', cfg.color,
-        officeSim0 ? 'all the toppings. Stanley has been waiting all year.' : 'pineapple on pizza is a security vulnerability')
+        officeSim0 ? 'all the toppings. Stanley has been waiting all year.' : '파인애플 피자는 보안 취약점')
     }, 46000))
 
     timers.push(setTimeout(() => {
@@ -1327,7 +1327,7 @@ const App: React.FC = () => {
         agentId: 'vid-security',
         result: officeSim0
           ? 'Audit complete — beets secured. 3 critical issues booked into the Schrute Manual.'
-          : 'Auth audit complete — 3 critical issues fixed, 2 PRs merged',
+          : '인증 감사 완료 — critical 이슈 3건 해결, PR 2개 머지 완료',
       })
     }, 48000))
 
@@ -1336,13 +1336,13 @@ const App: React.FC = () => {
       handleEvent({
         type: 'agent_completed',
         agentId: 'vid-explore',
-        result: officeSim0 ? 'Found 8 auth files — all filed under B for "Beet".' : 'Found 8 auth-related files, all updated',
+        result: officeSim0 ? 'Found 8 auth files — all filed under B for "Beet".' : '인증 관련 파일 8개 발견, 모두 업데이트 완료',
       })
     }, 52000))
 
-    // 55s: Antony wraps up
+    // 55s: Hermes wraps up
     timers.push(setTimeout(() => {
-      setAutoTypeText(officeSim0 ? 'great work team — boom. roasted. 🥨' : 'great work team, ship it! 🚀')
+      setAutoTypeText(officeSim0 ? 'great work team — boom. roasted. 🥨' : '수고하셨습니다, 바로 배포! 🚀')
     }, 55000))
 
     // 58s: Remaining agents complete
@@ -1658,7 +1658,7 @@ const App: React.FC = () => {
             ...a,
             state: 'walking-to-desk' as const,
             targetPosition: { ...a.deskPosition },
-            statusText: 'back to work',
+            statusText: '업무 복귀',
             pathQueue: computePath(a.position, a.deskPosition),
           })))
         }, event.duration)
@@ -1696,7 +1696,7 @@ const App: React.FC = () => {
                 ...a,
                 state: 'walking-to-desk' as const,
                 targetPosition: { ...a.deskPosition },
-                statusText: 'back to work',
+                statusText: '업무 복귀',
                 pathQueue: computePath(a.position, a.deskPosition),
               }
             }))

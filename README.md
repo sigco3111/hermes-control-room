@@ -1,22 +1,36 @@
 # Hermes Control Room
 
-> W17ant/Claude-Office 포크 · 헤르메스 자동화 시스템 시각화 (Dunder Mifflin 모드)
+> W17ant/Claude-Office 포크 · 헤르메스 자동화 시스템 시각화 · SIM/LIVE 토글 · 한글 UI
 
 A pixel art virtual office that visualizes your AI agents working in real-time. Watch Claude Code agents spawn, sit at desks, take coffee breaks, and chat in a Slack-inspired office chat panel — all rendered in an isometric pixel art office. Forked to **Hermes Control Room** so the office reflects 8 active automation departments (Tistory, briefing, automation, research, Notion, trading, media, DevOps) and their live cron status.
 
-## 라이브 데모
+## 데모
 
-- 🟢 **시뮬레이션**: https://sigco3111.github.io/hermes-control-room/
-- 🟢 **Live (Gist polling)**: https://sigco3111.github.io/hermes-control-room/?live&gist=d04b26e667187cd133a14e833eed4bcb
-- 1개 룸 (Dunder Mifflin 사무실) + 27 cast members
+- 🟢 https://sigco3111.github.io/hermes-control-room/
+- 진입 후 우상단 **`● SIM`** / **`● LIVE`** 토글으로 두 모드 즉시 전환
+- 기본값은 SIM(데모 시나리오 자동 재생), LIVE는 Gist polling으로 실제 이벤트 수신
+
+| 모드 | 색상 | 데이터 소스 |
+|------|------|------------|
+| **SIM** | cyan (`#6ce5e8`) | 내장 시뮬레이션 (Security/Frontend/Reviewer 등 8개 부서 시나리오) |
+| **LIVE** | green (`#5ee0a0`) + 펄스 | GitHub Gist `d04b26e667187cd133a14e833eed4bcb` 5초 polling |
+
+## SIM ↔ LIVE 토글
+
+모드 전환은 React state로 즉시 적용되며 페이지 새로고침이 필요 없습니다.
+
+- SIM 진입: 보스 + Claude가 출근, 8개 부서 시나리오 자동 스폰
+- LIVE 진입: 모든 SIM 상태 초기화, Gist polling 시작
+- 클릭 시점의 Gist 내용이 즉시 채팅에 표시되고 이후 push된 이벤트가 5-10초 내 반영
 
 ## Live 모드 (Hermes cron ↔ 브라우저)
 
 Live 모드는 GitHub Gist를 이벤트 로그로 사용해 **인프라 $0에 양방향 연동**을 구현합니다.
 
-- `?live` 쿼리 진입 → 브라우저가 5초마다 Gist의 `events.jsonl`을 polling
+- 브라우저가 5초마다 Gist의 `events.jsonl`을 polling (cache-bust 쿼리로 CDN 캐시 우회)
 - Hermes cron 작업이 Gist에 JSON Lines 1줄을 push → 5-10초 후 모든 연결된 브라우저에 반영
-- Gist ID는 `?gist=<ID>`로 override 가능 (기본값은 데모용 Gist)
+- Gist ID는 `?gist=<ID>` URL 파라미터로 override 가능
+- 모드 진입 시 Gist 전체를 다시 파싱 → `recentChatKeysRef`로 메시지 dedup
 
 ### Hermes 운영자가 Gist에 이벤트 push하는 방법
 
@@ -46,6 +60,13 @@ echo '{"type":"chat_message","sender":"DevOps","text":"cron 점검 완료","role
   >> events.jsonl
 gh gist edit $GIST_ID --add events.jsonl
 ```
+
+## 한글화 노트
+
+- 기본 UI (헤더, 채팅 placeholder, 버튼 툴팁, 부서 라벨)는 모두 한국어
+- SIM 모드의 시뮬레이션 대사, 보스 답장, status 텍스트 모두 한국어 번역
+- `/the-office` 토글 시 활성화되는 Dunder Mifflin 톤 (`OFFICE_SIM_CHATTER`, `OFFICE_SIM_TOOL_MESSAGES`)은 **의도적으로 영문 유지** — TV 시리즈 "The Office"의 캐릭터성 보존을 위함
+- 부서 라벨 매핑 (`HERMES_DEPARTMENT_DISPLAY`)에 8개 부서 + 확장 role 17개 한국어 라벨 정의
 
 ### 지원 이벤트 타입
 
