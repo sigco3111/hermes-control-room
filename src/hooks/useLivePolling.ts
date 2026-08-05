@@ -19,6 +19,7 @@ export function useLivePolling({ url, onEvent, enabled }: LivePollingOptions) {
 
   useEffect(() => {
     if (!enabled || !url) return
+    lastLenRef.current = 0
     let cancelled = false
     let retryDelay = BACKOFF_INITIAL
 
@@ -29,9 +30,8 @@ export function useLivePolling({ url, onEvent, enabled }: LivePollingOptions) {
         const r = await fetch(bustUrl, { cache: 'no-store' })
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         const text = await r.text()
-        const fresh = text.slice(lastLenRef.current)
         lastLenRef.current = text.length
-        for (const raw of fresh.split('\n')) {
+        for (const raw of text.split('\n')) {
           const line = raw.trim()
           if (!line) continue
           if (line.startsWith('{"_":')) continue

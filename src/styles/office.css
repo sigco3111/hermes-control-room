@@ -109,6 +109,60 @@
   -webkit-app-region: no-drag;
 }
 
+.title-bar-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  -webkit-app-region: no-drag;
+  transition: all 0.2s;
+  color: #5a4a38;
+}
+.title-bar-mode:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.28);
+  color: #c8b090;
+}
+.title-bar-mode-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #555;
+  box-shadow: 0 0 2px transparent;
+  transition: all 0.2s;
+}
+.title-bar-mode--sim .title-bar-mode-dot {
+  background: var(--lab-cyan, #6ce5e8);
+  box-shadow: 0 0 5px var(--lab-cyan, #6ce5e8);
+}
+.title-bar-mode--sim {
+  color: var(--lab-cyan, #6ce5e8);
+  border-color: rgba(108, 229, 232, 0.42);
+  background: rgba(108, 229, 232, 0.08);
+}
+.title-bar-mode--live .title-bar-mode-dot {
+  background: var(--lab-green, #5ee0a0);
+  box-shadow: 0 0 5px var(--lab-green, #5ee0a0);
+  animation: modeDotPulse 1.5s ease-in-out infinite;
+}
+.title-bar-mode--live {
+  color: var(--lab-green, #5ee0a0);
+  border-color: rgba(94, 224, 160, 0.42);
+  background: rgba(94, 224, 160, 0.08);
+}
+@keyframes modeDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
 .title-bar-daynight {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);

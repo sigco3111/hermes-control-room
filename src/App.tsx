@@ -42,14 +42,10 @@ import { setTheme as _setTheme } from './theme'
 const PlacementHelper = lazy(() => import('./components/PlacementHelper'))
 const params = new URLSearchParams(window.location.search)
 const isHelperMode = params.has('helper')
-const isSimMode = !params.has('live')
-const isLiveMode = params.has('live')
 const isVideoMode = params.has('video')
 const DEFAULT_LIVE_GIST_ID = 'd04b26e667187cd133a14e833eed4bcb'
 const liveGistId = params.get('gist') || DEFAULT_LIVE_GIST_ID
-const livePollingUrl = isLiveMode
-  ? `https://gist.githubusercontent.com/sigco3111/${liveGistId}/raw/events.jsonl`
-  : null
+const livePollingUrl = `https://gist.githubusercontent.com/sigco3111/${liveGistId}/raw/events.jsonl`
 if (params.get('theme') === 'office') {
   _setTheme('office')
 } else if (params.get('theme') === 'hermes' || !params.get('theme')) {
@@ -295,6 +291,7 @@ const App: React.FC = () => {
   console.log("UNIQUE_MARKER_98374")
   // All hooks must be at the top — before any conditional returns.
   const theme = useTheme() // Why: re-render rooms + agents when /the-office toggles
+  const [mode, setMode] = useState<'sim' | 'live'>(params.has('live') ? 'live' : 'sim')
   const [agents, setAgents] = useState<Agent[]>(() => [createBoss(), createClaude()])
   const agentMetaRef = useRef<Map<string, AgentMeta>>(new Map([
     [BOSS_ID, { spawnedAt: Date.now(), arrivedAtDeskAt: Date.now(), idleSince: null, onBreak: false, breakStartedAt: null }],
@@ -510,6 +507,7 @@ const App: React.FC = () => {
   // Boss & Claude arrival messages (ref guard prevents StrictMode double-fire)
   const arrivedRef = useRef(false)
   useEffect(() => {
+    if (mode !== 'sim') return
     if (arrivedRef.current) return
     arrivedRef.current = true
     const bossCfg = AGENT_CONFIGS[BOSS_ROLE] ?? AGENT_CONFIGS['default']
@@ -519,7 +517,35 @@ const App: React.FC = () => {
       addMsg(claudeCfg.title, CLAUDE_ROLE, claudeCfg.color, '🤖 출근했습니다')
     }, 1500)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [mode])
+
+  // ---------------------------------------------------------------------------
+  // Mode reset — when mode changes, clear chat/agents/effects so the new mode
+  // starts with a clean slate.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    setMessages([])
+    setAgents([createBoss(), createClaude()])
+    agentMetaRef.current = new Map([
+      [BOSS_ID, { spawnedAt: Date.now(), arrivedAtDeskAt: Date.now(), idleSince: null, onBreak: false, breakStartedAt: null }],
+      [CLAUDE_ID, { spawnedAt: Date.now(), arrivedAtDeskAt: Date.now(), idleSince: null, onBreak: false, breakStartedAt: null }],
+    ])
+    agentsRef.current = [createBoss(), createClaude()]
+    arrivedRef.current = false
+    setChatTypingUser(null)
+    setAutoTypeText(undefined)
+    setBossEffect(null)
+    setTypingAgents(new Set())
+    pendingEffectsRef.current = []
+    recentChatKeysRef.current = new Set()
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current)
+      typingTimeoutRef.current = null
+    }
+    setFurnitureStates({})
+    setFlickering(false)
+    interactionCooldowns.current = new Map()
+  }, [mode])
 
   // ---------------------------------------------------------------------------
   // Day/night cycle — compressed: 10 min = 24 hours
@@ -855,14 +881,14 @@ const App: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   useAgentSocket({ onEvent: handleEvent, url: 'ws://localhost:3334/ws', disabled: true })
-  useLivePolling({ url: livePollingUrl ?? '', onEvent: handleEvent, enabled: !!livePollingUrl })
+  useLivePolling({ url: livePollingUrl ?? '', onEvent: handleEvent, enabled: mode === 'live' && !!livePollingUrl })
 
   // ---------------------------------------------------------------------------
   // Simulation loop — spawns/completes fake agents (only in ?sim mode)
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (!isSimMode) return
+    if (mode !== 'sim') return
     const timers: ReturnType<typeof setTimeout>[] = []
     const intervals: ReturnType<typeof setInterval>[] = []
 
@@ -1149,7 +1175,7 @@ const App: React.FC = () => {
       intervals.forEach(i => clearInterval(i))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [mode])
 
   // ---------------------------------------------------------------------------
   // Video mode — scripted demo for TikTok recording (?video)
@@ -1783,6 +1809,14 @@ const App: React.FC = () => {
         <div className="title-bar-dot" style={{ background: '#28c840' }} />
         <span className="title-bar-text">HERMES CONTROL ROOM</span>
         <span className="title-bar-clock">{formatHHMM(new Date())}</span>
+        <button
+          className={`title-bar-mode title-bar-mode--${mode}`}
+          onClick={() => setMode(m => m === 'sim' ? 'live' : 'sim')}
+          title={mode === 'sim' ? '시뮬레이션 모드 — 클릭하면 Live 모드로 전환' : 'Live 모드 (Gist polling) — 클릭하면 시뮬레이션 모드로 전환'}
+        >
+          <span className="title-bar-mode-dot" />
+          {mode === 'sim' ? 'SIM' : 'LIVE'}
+        </button>
         <button
           className="title-bar-daynight"
           onClick={() => setDayNightMode(prev =>
