@@ -4,6 +4,10 @@ import './styles/rooms.css'
 import SlackChat, { ChatMessage } from './components/SlackChat'
 import Character from './components/Character'
 import FurnitureRenderer from './components/FurnitureRenderer'
+import { LabHeader, type HermesMetrics } from './components/LabHeader'
+import { LabSidePanel } from './components/LabSidePanel'
+import { LabTicker } from './components/LabTicker'
+import type { HermesRoomId } from './hermesRooms'
 import { Agent, OfficeEvent, AGENT_CONFIGS } from './types'
 import { getCurrentPhase, getPhaseLabel, type DayPhase } from './daylight'
 import { ROOMS } from './rooms'
@@ -285,6 +289,7 @@ const OFFICE_SIM_CHATTER = [
 ]
 
 const App: React.FC = () => {
+  console.log("UNIQUE_MARKER_98374")
   // All hooks must be at the top — before any conditional returns.
   const theme = useTheme() // Why: re-render rooms + agents when /the-office toggles
   const [agents, setAgents] = useState<Agent[]>(() => [createBoss(), createClaude()])
@@ -315,6 +320,16 @@ const App: React.FC = () => {
 
   // Boss interaction effect (shown above boss character)
   const [bossEffect, setBossEffect] = useState<string | null>(null)
+
+  // Twin Lab header: selected department + mock metrics
+  const [selectedRoomId, setSelectedRoomId] = useState<HermesRoomId | null>(null)
+  const [metrics] = useState<HermesMetrics>({
+    activeCrons: 19,
+    memoryUsed: 2189,
+    memoryCap: 2200,
+    tistoryToday: 0,
+    sessionCount: 1,
+  })
 
   const handleFurnitureClick = useCallback((itemId: string) => {
     const interaction = getInteraction(itemId)
@@ -1768,6 +1783,11 @@ const App: React.FC = () => {
 
   return (
     <div className="app-wrapper">
+      <LabHeader
+        metrics={metrics}
+        selectedRoomId={selectedRoomId}
+        onSelectRoom={setSelectedRoomId}
+      />
       <div className="title-bar">
         <div className="title-bar-dot" style={{ background: '#ff5f57' }} />
         <div className="title-bar-dot" style={{ background: '#febc2e' }} />
@@ -1790,10 +1810,10 @@ const App: React.FC = () => {
         <div
           className={`room-container${flickering ? ' flickering' : ''}`}
           style={{
-            aspectRatio: '4800/3584',
             width: '100%',
-            maxHeight: '100%',
+            height: '100%',
             position: 'relative',
+            overflow: 'hidden',
           }}
         >
           {/* Room backgrounds — both rendered, night crossfades via opacity. Theme swaps source art. */}
@@ -1911,6 +1931,14 @@ const App: React.FC = () => {
         </div>
       </div>
 
+      <LabSidePanel
+        selectedRoomId={selectedRoomId}
+        onClose={() => setSelectedRoomId(null)}
+      />
+      </div>
+
+      <LabTicker />
+
       <SlackChat
         messages={messages}
         muted={muted}
@@ -1938,7 +1966,6 @@ const App: React.FC = () => {
           ))
         }}
       />
-      </div>
     </div>
   )
 }
