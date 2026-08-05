@@ -198,42 +198,42 @@ export function themedDisplayName(role: string, fallback: string): string {
 // ===== THEMED CHATTER POOLS =====
 
 const OFFICE_SPAWN = [
-  'Identity theft is not a joke, Jim!',
-  'reporting to Scranton branch',
-  'paper, paper, paper',
-  'Bears. Beets. Battlestar Galactica.',
-  'D to the U to the N to the...',
-  'I am Beyoncé, always.',
-  'clocked in, Dunder Mifflin style',
+  '신원 도용은 농담이 아니야, Jim!',
+  'Scranton 지사로 출근',
+  '종이, 종이, 종이',
+  '곰. 사탕무우. �스타 갈락티카.',
+  'D-U-N-D-E-R... 그 다음은?',
+  '나는 항상 Beyoncé.',
+  'Dunder Mifflin 스타일로 출근',
 ]
 const OFFICE_WORK = [
-  'selling paper',
-  'processing reams',
-  'false. black bears.',
-  'Schrute bucks awarded',
-  'negotiating with corporate',
-  'filing TPS reports',
-  'Finer Things Club newsletter',
+  '종이 팔고 있음',
+  '린 처리 중',
+  '아니. 검은 곰.',
+  'Schrute Buck 부여',
+  '본사와 협상 중',
+  'TPS 리포트 제출',
+  'Finer Things Club 뉴스레터',
 ]
 const OFFICE_DONE = [
-  "that's what she said",
-  'boom. roasted.',
-  'PR shipped like 24lb bond',
-  "World's Best Boss approves",
-  'closed the deal',
-  'merged — Jim-approved',
+  '그녀가 그랬죠',
+  '팸. 로스트.',
+  'PR 출하 — 24lb 본드처럼 �직함',
+  "World's Best Boss 승인",
+  '계약 성사',
+  '머지 완료 — Jim 승인',
 ]
 const OFFICE_COFFEE = [
-  'grande latte from Jim',
-  "Kevin's famous chili break",
-  'pretzel day!',
-  'brb, break room',
+  'Jim이 내려준 그란데 라떼',
+  'Kevin의 유명한 칠리 브레이크',
+  '프레첼 데이!',
+  '잠�, 휴게실',
 ]
 const OFFICE_WATER = [
-  'hydration — Angela says water only',
-  "Stanley says it's almost 5",
-  'filling up, then pretzel',
-  'break room run',
+  '수분 보충 — Angela는 물만 마심',
+  'Stanley가 거의 5시라고 함',
+  '물 채우고 프레첼로',
+  '휴게실 들려',
 ]
 
 const DEFAULT_SPAWN = [
@@ -264,40 +264,40 @@ export function themedWater(): string  { return pick(state.name === 'office' ? O
 // Parallel tool-output messages keyed by role — used when ?sim or ?video loads with Office theme.
 export const OFFICE_SIM_TOOL_MESSAGES: Record<string, string[]> = {
   'security-auditor': [
-    '⚡ auditing middleware for season-nine vulnerabilities',
-    '⚠️ Dwight stored session tokens in his beet cellar',
-    '🚨 JWT refresh token has expiry of "never" — classic',
-    'moving everything to httpOnly before Toby finds out',
+    '⚡ 시즌9 취약점 관련 미들웨어 감사 중',
+    '⚠️ Dwight가 세션 토큰을 사탕무우 저장고에 보관',
+    '🚨 JWT 리프레시 토큰 만료 "없음" — 클래식',
+    'Toby가 눈치 채기 전에 모두 httpOnly로 이전',
   ],
   'code-reviewer': [
-    '⚡ running: grep -r "that\'s what she said" src/',
-    '🔍 reviewing — this PR has more drama than the Dundies',
-    '💡 suggesting httpOnly cookies — not localStorage, this isn\'t Schrute Farms',
-    'lgtm, ship it to Stamford branch',
+    '⚡ 실행: grep -r "그녀가 그랬죠" src/',
+    '🔍 리뷰 중 — 이번 PR이 Dundies보다 더 드라마틱',
+    '💡 httpOnly 쿠키 제안 — localStorage 말고, 이건 Schrute 농장이 아님',
+    'LGTM, Stamford 지사로 출하',
   ],
   'frontend-developer': [
-    '⚡ editing src/auth/tokenStore.ts',
-    '🎨 new login screen looks better than Phyllis\'s wedding',
-    'I can handle the cookie migration, no big deal',
-    'responsive on mobile — even Stanley approves',
+    '⚡ src/auth/tokenStore.ts 수정 중',
+    '🎨 새 로그인 화면이 Phyllis의 결혼식보다 더 세련됨',
+    '쿠키 마이그레이션 처리 가능, 큰 일 아님',
+    '모바일 반응형 — Stanley도 승인',
   ],
   'assistant': [
-    'the printer jammed again. third time today. Sabre strikes.',
-    'someone check on Michael, he\'s monologuing',
-    "I'll handle it — identity theft is not a joke",
+    '프린터 또 걸렸음. 오늘 세 번째. Sabre의 저주.',
+    '누가 Michael 좀 봐줘, 독백 중',
+    "내가 처리할게 — 신원 도용은 농담이 아니야",
   ],
   'boss': [
-    'pizza in the lobby! it\'s pretzel day!',
-    'anyone want a Red Bull? or a Schrute Buck?',
-    'ship it, we\'ll fix it in prod. PARKOUR!',
-    'how are we looking on the dashboard?',
+    '로비에 피자! 오늘은 프레� 데이!',
+    '레드불 마실 사람? 또는 Schrute Buck?',
+    '그냥 배포, 프로덕션에서 고치자. PARKOUR!',
+    '대시보드 어때?',
   ],
 }
 
-/** Sim replacement for Antony's typed questions, when theme is Office */
+/** Sim replacement for Hermes's typed questions, when theme is Office */
 export const OFFICE_SIM_BOSS_PROMPTS = [
-  '/ultra-think audit our authentication like Dwight auditing the beet farm',
-  'how bad is the localStorage issue — worse than Kevin dropping the chili?',
+  '/ultra-think Dwight가 사탕무우 농장 감사하듯 우리 인증 감사해줘',
+  'localStorage 이슈 얼마나 심각해 — Kevin이 칠리 흘린 것보다 더?',
 ]
 
 // ===== Rotation helpers for the Office ?sim rotation =====

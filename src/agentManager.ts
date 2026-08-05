@@ -249,7 +249,8 @@ export function getEffect(
     case 'working': {
       // Ultra-think = energy drink mode — check both statusText and task
       const text = `${statusText ?? ''} ${task ?? ''}`.toLowerCase()
-      if (text.includes('ultra') || text.includes('deep analysis') || text.includes('ultra-think')) {
+      if (text.includes('ultra') || text.includes('deep analysis') || text.includes('ultra-think') ||
+          text.includes('초사고') || text.includes('심층 분석') || text.includes('초사고:')) {
         return pickEnergyDrink(agentId ?? 'default')
       }
       // No permanent typing bubble — only shows via status updates briefly
@@ -285,62 +286,9 @@ export function getEffect(
 }
 
 // ---------------------------------------------------------------------------
-// Slack message helpers
-// ---------------------------------------------------------------------------
-
-const SPAWN_MESSAGES = [
-  'reporting for duty!',
-  'clocked in',
-  'ready to ship',
-  'coffee first, then code',
-  'let\'s do this',
-  'opening vim...',
-  'pulling latest main',
-]
-
-const WORK_MESSAGES = [
-  'on it',
-  'typing furiously',
-  'in the zone',
-  'making progress',
-  'checking the docs',
-  'git blame time',
-  'stack overflow to the rescue',
-]
-
-const DONE_MESSAGES = [
-  'task complete!',
-  'shipped it',
-  'PR opened',
-  'done and dusted',
-  'LGTM',
-  'merged to main',
-  'deployed',
-]
-
-const COFFEE_MESSAGES = [
-  'brb, coffee',
-  'need caffeine',
-  'grabbing a cup',
-  'coffee run',
-]
-
-function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)]
-}
-
-const WATER_MESSAGES = [
-  'stay hydrated',
-  'h2o break',
-  'water run',
-  'refilling bottle',
-  'hydration check',
-  'quick water break',
-]
-
-// Why: route through theme module so Office mode swaps chatter automatically.
-// Fallback pool kept for reference but theme module carries default strings too.
-void SPAWN_MESSAGES; void WORK_MESSAGES; void DONE_MESSAGES; void COFFEE_MESSAGES; void WATER_MESSAGES
+// Slack message helpers — routed through theme module so Office mode swaps chatter.
+// All default strings live in theme.ts (DEFAULT_*), Office variant (OFFICE_*) lives there too.
+// Why: a single source of truth for chatter pool per theme keeps the two surfaces in sync.
 export function spawnMessage(): string  { return themedSpawn() }
 export function workMessage(): string   { return themedWork() }
 export function doneMessage(): string   { return themedDone() }

@@ -632,7 +632,7 @@ const App: React.FC = () => {
 
           if (!spot) {
             const cfg = AGENT_CONFIGS[role] ?? AGENT_CONFIGS['default']
-            effects.push({ msg: { sender: name, role, color: cfg.color, text: 'waiting for a desk...' } })
+            effects.push({ msg: { sender: name, role, color: cfg.color, text: '책상 기다리는 중...' } })
             return prev
           }
 
@@ -1069,11 +1069,16 @@ const App: React.FC = () => {
 
           // Trigger ultra-think powerup on specific messages
           if (sim.slackMessages[msgIdx].includes('race condition') ||
+              sim.slackMessages[msgIdx].includes('레이스 컨디션') ||
               sim.slackMessages[msgIdx].includes('scanning') ||
-              sim.slackMessages[msgIdx].includes('architecture')) {
+              sim.slackMessages[msgIdx].includes('스캐닝') ||
+              sim.slackMessages[msgIdx].includes('architecture') ||
+              sim.slackMessages[msgIdx].includes('아키텍처') ||
+              sim.slackMessages[msgIdx].includes('deep analysis') ||
+              sim.slackMessages[msgIdx].includes('심층 분석')) {
             setAgents(prev => prev.map(a =>
               a.role === sim.role
-                ? { ...a, statusText: 'ultra-think: deep analysis...' }
+                ? { ...a, statusText: '초사고: 심층 분석 중...' }
                 : a
             ))
             // Clear ultra-think after a few seconds
@@ -1243,7 +1248,7 @@ const App: React.FC = () => {
 
     // 25s: Hermes types a follow-up
     timers.push(setTimeout(() => {
-      setAutoTypeText(isOfficeSim ? (OFFICE_SIM_BOSS_PROMPTS[1] ?? 'how bad is the localStorage issue?') : 'localStorage 이슈 얼마나 심각해?')
+      setAutoTypeText(isOfficeSim ? (OFFICE_SIM_BOSS_PROMPTS[1] ?? 'localStorage 이슈 얼마나 심각해?') : 'localStorage 이슈 얼마나 심각해?')
     }, 25000))
 
     // 27s: Agent replies
@@ -1286,7 +1291,7 @@ const App: React.FC = () => {
       addMsg('system', 'default', '#8b8d91',
         officeSim0 ? '🥨 프레첼 데이입니다!' : '🍕 피자가 도착했습니다! 점심 무료!', true)
       addMsg(bossCfg.title, BOSS_ROLE, bossCfg.color,
-        officeSim0 ? "You don't understand. It's pretzel day." : '로비에 피자 도착!')
+        officeSim0 ? '모르시겠지만, 오늘은 프레첼 데이입니다.' : '로비에 피자 도착!')
       // Move all agents to door
       setAgents(prev => prev.map(a => ({
         ...a,
@@ -1311,13 +1316,13 @@ const App: React.FC = () => {
     timers.push(setTimeout(() => {
       const cfg = AGENT_CONFIGS['security-auditor'] ?? AGENT_CONFIGS['default']
       addMsg('Security', 'security-auditor', cfg.color,
-        officeSim0 ? 'all the toppings. Stanley has been waiting all year.' : '파인애플 피자는 보안 취약점')
+        officeSim0 ? '토핑 다 넣음. Stanley가 일년 내내 기다렸음.' : '파인애플 피자는 보안 취약점')
     }, 46000))
 
     timers.push(setTimeout(() => {
       const cfg = AGENT_CONFIGS['frontend-developer'] ?? AGENT_CONFIGS['default']
       addMsg('Frontend', 'frontend-developer', cfg.color,
-        officeSim0 ? "that's what she said" : '😂')
+        officeSim0 ? '그녀가 그랬죠' : '😂')
     }, 47500))
 
     // 48s: Security completes
@@ -1326,7 +1331,7 @@ const App: React.FC = () => {
         type: 'agent_completed',
         agentId: 'vid-security',
         result: officeSim0
-          ? 'Audit complete — beets secured. 3 critical issues booked into the Schrute Manual.'
+          ? '인증 감사 완료 — beet 확보. critical 이슈 3건, Schrute 매뉴얼에 기록.'
           : '인증 감사 완료 — critical 이슈 3건 해결, PR 2개 머지 완료',
       })
     }, 48000))
@@ -1336,24 +1341,24 @@ const App: React.FC = () => {
       handleEvent({
         type: 'agent_completed',
         agentId: 'vid-explore',
-        result: officeSim0 ? 'Found 8 auth files — all filed under B for "Beet".' : '인증 관련 파일 8개 발견, 모두 업데이트 완료',
+        result: officeSim0 ? '인증 파일 8개 발견 — 모두 B 카테고리("Beet")에 보관.' : '인증 관련 파일 8개 발견, 모두 업데이트 완료',
       })
     }, 52000))
 
     // 55s: Hermes wraps up
     timers.push(setTimeout(() => {
-      setAutoTypeText(officeSim0 ? 'great work team — boom. roasted. 🥨' : '수고하셨습니다, 바로 배포! 🚀')
+      setAutoTypeText(officeSim0 ? '수고하셨습니다 — 끝내줍니다. 로스트. 🥨' : '수고하셨습니다, 바로 배포! 🚀')
     }, 55000))
 
     // 58s: Remaining agents complete
     timers.push(setTimeout(() => {
       handleEvent({ type: 'agent_completed', agentId: 'vid-reviewer',
-        result: officeSim0 ? 'All PRs reviewed — Jim-approved.' : 'All PRs reviewed and approved' })
+        result: officeSim0 ? '모든 PR 리뷰 완료 — Jim 승인.' : '모든 PR 리뷰 및 승인 완료' })
     }, 58000))
 
     timers.push(setTimeout(() => {
       handleEvent({ type: 'agent_completed', agentId: 'vid-frontend',
-        result: officeSim0 ? 'Cookies deployed — Kevin took half for his chili.' : 'Cookie migration deployed to staging' })
+        result: officeSim0 ? '쿠키 배포 완료 — Kevin이 절반을 가져가서 칠리에 넣었습니다.' : '쿠키 마이그레이션 스테이징 배포 완료' })
     }, 60000))
 
     return () => timers.forEach(t => clearTimeout(t))
@@ -1530,7 +1535,7 @@ const App: React.FC = () => {
 
               const cfg = AGENT_CONFIGS[updated.role] ?? AGENT_CONFIGS['default']
               const isBoss = updated.id === BOSS_ID
-              const breakMsg = useWater ? waterMessage() : (isBoss ? 'grabbing a Red Bull' : coffeeMessage())
+              const breakMsg = useWater ? waterMessage() : (isBoss ? '레드불 한 캔 따는 중' : coffeeMessage())
               const breakIcon = isBoss ? '🥫' : (useWater ? '💧' : '☕')
               addMsg(updated.name, updated.role, cfg.color, `${breakIcon} ${breakMsg}`)
               if (!sfx.isMuted()) sfx.playCoffee()
