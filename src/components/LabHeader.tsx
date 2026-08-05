@@ -56,16 +56,8 @@ export function LabHeader({ metrics, selectedRoomId, onSelectRoom }: LabHeaderPr
         <span className="lab-header__metric">
           <span className="lab-header__metric-label">메모리</span>
           <span className="lab-header__metric-value">
-            {metrics.memoryUsed}/{metrics.memoryCap}
+            {Math.round(metrics.memoryUsed / metrics.memoryCap * 100)}%
           </span>
-        </span>
-        <span className="lab-header__metric">
-          <span className="lab-header__metric-label">Tistory</span>
-          <span className="lab-header__metric-value">{metrics.tistoryToday}</span>
-        </span>
-        <span className="lab-header__metric">
-          <span className="lab-header__metric-label">세션</span>
-          <span className="lab-header__metric-value">{metrics.sessionCount}</span>
         </span>
       </div>
     </header>
