@@ -43,7 +43,7 @@ export function LabHeader({ metrics, selectedRoomId, onSelectRoom }: LabHeaderPr
               title={r.description}
             >
               <span className="lab-header__chip-emoji">{r.emoji}</span>
-              <span className="lab-header__chip-label">{r.name}</span>
+              <span className="lab-header__chip-label">{(r as any).shortLabel || r.name}</span>
             </button>
           )
         })}

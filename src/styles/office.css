@@ -120,11 +120,11 @@
   color: var(--lab-cyan);
   box-shadow: 0 0 12px rgba(108, 229, 232, 0.32);
 }
-.lab-header__chip--active  { border-left: 3px solid var(--lab-green); }
-.lab-header__chip--idle    { border-left: 3px solid var(--lab-text-muted); }
-.lab-header__chip--waiting { border-left: 3px solid var(--lab-amber); }
-.lab-header__chip--inactive{ border-left: 3px solid var(--lab-text-dim); }
-.lab-header__chip--error   { border-left: 3px solid var(--lab-rose); }
+
+
+
+
+
 .lab-header__chip-emoji   { font-size: 13px; line-height: 1; }
 .lab-header__chip-label   { font-weight: 500; letter-spacing: 0.2px; }
 .lab-header__right {
@@ -135,21 +135,20 @@
   flex-shrink: 0;
 }
 .lab-header__metric {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  gap: 1px;
-  padding: 3px 6px;
+  gap: 4px;
+  padding: 3px 8px;
   background: var(--lab-glass-bg);
   border: 1px solid var(--lab-border-soft);
   border-radius: 6px;
-  min-width: 48px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .lab-header__metric-label {
-  font-size: 7px;
+  font-size: 9px;
   color: var(--lab-text-muted);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 .lab-header__metric-value {

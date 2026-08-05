@@ -17,6 +17,7 @@ export type HermesRoomStatus = 'active' | 'idle' | 'waiting' | 'inactive' | 'err
 export interface HermesRoom {
   id: HermesRoomId
   name: string
+  shortLabel?: string
   emoji: string
   description: string
   /** 부서 배경 (rooms.ts room id 매핑) */
@@ -36,6 +37,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'tistory',
     name: 'Tistory 발행',
     emoji: '📝',
+    shortLabel: '발행',
     description: '블로그 자동 발행 — SEO + 트렌드 + 중복 방지',
     sourceRoom: 'main-office',
     skillPrefixes: ['tistory-publisher', 'periodic-data-pipeline'],
@@ -47,6 +49,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'briefing',
     name: '모닝 브리핑',
     emoji: '🌅',
+    shortLabel: '브리핑',
     description: '매일 아침 통합 인사이트 — 주식/뉴스/일정',
     sourceRoom: 'lobby',
     skillPrefixes: ['morning-briefing', 'invest-memo', 'agentnews-monitor'],
@@ -58,6 +61,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'automation',
     name: '자동화 정비',
     emoji: '⚙️',
+    shortLabel: '자동화',
     description: 'Cron self-heal + 에러 모니터 + 야간 정비',
     sourceRoom: 'server-room',
     skillPrefixes: [
@@ -76,6 +80,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'research',
     name: '리서치/트렌드',
     emoji: '🔍',
+    shortLabel: '리서치',
     description: 'GitHub trending + iOS 뉴스 + 기술 트렌드',
     sourceRoom: 'meeting-room',
     skillPrefixes: [
@@ -93,6 +98,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'notion',
     name: 'Notion 동기화',
     emoji: '📓',
+    shortLabel: '노션',
     description: 'Notion DB + 지식 그래프 + 위키',
     sourceRoom: 'manager-office',
     skillPrefixes: [
@@ -112,6 +118,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'trading',
     name: '투자/트레이딩',
     emoji: '📈',
+    shortLabel: '투자',
     description: '주식 시장 + 포트폴리오 리밸런싱',
     sourceRoom: 'ceo-office',
     skillPrefixes: [
@@ -128,6 +135,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'media',
     name: '미디어/영상',
     emoji: '🎬',
+    shortLabel: '미디어',
     description: 'YouTube + 음성/영상 + 뮤직비디오',
     sourceRoom: 'rooftop',
     skillPrefixes: [
@@ -144,6 +152,7 @@ export const HERMES_ROOMS: HermesRoom[] = [
     id: 'devops',
     name: 'DevOps',
     emoji: '🔧',
+    shortLabel: 'DevOps',
     description: 'Hermes Kanban + 코드 품질 + 위임 시스템',
     sourceRoom: 'gym',
     skillPrefixes: [
